@@ -10,6 +10,8 @@
 #include <dns_sd.h>
 
 @interface HHServiceSupport : NSObject {
+    @private
+        CFRunLoopRef runLoop;
     @protected
         DNSServiceRef sdRef;
 }

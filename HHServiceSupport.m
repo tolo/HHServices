@@ -55,16 +55,20 @@ static void sdRefSocketCallback(CFSocketRef s, CFSocketCallBackType type, CFData
 
 
 - (void) doDestroy {
-    if( runLoopSource ) {
-        CFRunLoopRemoveSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopDefaultMode);
+    if( runLoopSource != NULL ) {
+        CFRunLoopRemoveSource(runLoop, runLoopSource, kCFRunLoopDefaultMode);
         runLoopSource = NULL;
     }
-    if( sdRefSocket ) {
+    if( runLoop != NULL ) {
+        CFRelease(runLoop);
+        runLoop = NULL;
+    }
+    if( sdRefSocket != NULL ) {
         CFSocketInvalidate(sdRefSocket);
         CFRelease(sdRefSocket);
         sdRefSocket = NULL;
     }
-    if (sdRef != NULL ) {
+    if ( sdRef != NULL ) {
         DNSServiceRefDeallocate(sdRef);
         sdRef = NULL;
     }
@@ -92,7 +96,8 @@ static void sdRefSocketCallback(CFSocketRef s, CFSocketCallBackType type, CFData
                 
                 runLoopSource = CFSocketCreateRunLoopSource(NULL, sdRefSocket, 0);
                 if( runLoopSource != NULL ) {
-                    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopDefaultMode);
+                    runLoop = (CFRunLoopRef)CFRetain(CFRunLoopGetCurrent());
+                    CFRunLoopAddSource(runLoop, runLoopSource, kCFRunLoopDefaultMode);
                     CFRelease(runLoopSource);
                 } else lastError = kDNSServiceErr_Unknown;
             } else lastError = kDNSServiceErr_Unknown;
