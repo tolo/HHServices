@@ -11,15 +11,15 @@ Usage examples
 Publish service
 ---------------
 
-    HHServicePublisher* pub = [[[HHServicePublisher alloc] initWithName:self.displayName
-                                    type:@"_myservice._tcp." domain:@"local." txtData:nil 12345] autorelease];
-    pub.delegate = self;
-    [pub beginPublish];
+    publisher = [[HHServicePublisher alloc] initWithName:@"MyDisplayName"
+                                    type:@"_myservice._tcp." domain:@"local." txtData:nil port:12345];
+    publisher.delegate = self;
+    [publisher beginPublish];
 
 Discover service
 ----------------
 
-    HHServiceBrowser* browser = [[[HHServiceBrowser alloc] initWithType:t@"_myservice._tcp." domain:@"local."] autorelease];
+    browser = [[HHServiceBrowser alloc] initWithType:@"_myservice._tcp." domain:@"local."];
     browser.delegate = self;
     [browser beginBrowse];
     
