@@ -17,7 +17,7 @@
 
 @property (nonatomic, retain) HHService* resolver;
 
-- (void) browserReceviedResult:(DNSServiceErrorType)error serviceName:(NSString*)serviceName add:(BOOL)add moreComing:(BOOL)moreComing;
+- (void) browserReceviedResult:(DNSServiceErrorType)error serviceName:(NSString*)serviceName serviceDomain:(NSString*)serviceDomain add:(BOOL)add moreComing:(BOOL)moreComing;
 
 @end
 
@@ -34,8 +34,10 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
     BOOL moreComing = flags & kDNSServiceFlagsMoreComing;
     
     NSString* newName = [[NSString alloc] initWithCString:serviceName encoding:NSUTF8StringEncoding];
-    [serviceBrowser browserReceviedResult:errorCode serviceName:newName add:add moreComing:moreComing];
+    NSString* newDomain = [[NSString alloc] initWithCString:replyDomain encoding:NSUTF8StringEncoding];
+    [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
     [newName release];
+    [newDomain release];
 }
 
 
@@ -53,10 +55,10 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 #pragma mark Internal methods
 
 
-- (void) browserReceviedResult:(DNSServiceErrorType)error serviceName:(NSString*)serviceName add:(BOOL)add moreComing:(BOOL)moreComing {
+- (void) browserReceviedResult:(DNSServiceErrorType)error serviceName:(NSString*)serviceName serviceDomain:(NSString*)serviceDomain add:(BOOL)add moreComing:(BOOL)moreComing {
     self.lastError = error;
     if (error == kDNSServiceErr_NoError) {
-        HHService* service = [[[HHService alloc] initWithName:serviceName type:self.type domain:self.domain includeP2P:self.includeP2P] autorelease];
+        HHService* service = [[[HHService alloc] initWithName:serviceName type:self.type domain:serviceDomain includeP2P:self.includeP2P] autorelease];
 
         if( add ) [self.delegate serviceBrowser:self didFindService:service moreComing:moreComing];
         else [self.delegate serviceBrowser:self didRemoveService:service moreComing:moreComing];

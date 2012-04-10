@@ -63,7 +63,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     BOOL moreComing = flags & kDNSServiceFlagsMoreComing;
 
     if (errorCode == kDNSServiceErr_NoError) {
-        serviceResolver.port = port;
+        serviceResolver.port = NSSwapBigShortToHost(port);
 
         // Get IP-address(es)
         DNSServiceRef getInfoRef;
@@ -192,7 +192,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 }
 
 - (NSString*) description {
-    return [NSString stringWithFormat:@"HHService[%@, %@, %@, %@]", self.name, self.type, self.domain, self.resolvedHostName];
+    return [NSString stringWithFormat:@"HHService[0x%08X, %@, %@, %@, %@, %@]", self, self.name, self.type, self.domain, self.resolvedHostName, self.resolvedAddresses];
 }
 
 
