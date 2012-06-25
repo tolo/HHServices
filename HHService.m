@@ -22,7 +22,8 @@
 @property (nonatomic, retain, readwrite) NSString* resolvedHostName;
 @property (nonatomic, retain, readwrite) NSArray* resolvedAddresses;
 @property (nonatomic, retain, readwrite) NSData* txtData;
-@property (nonatomic) uint16_t port;
+
+@property (nonatomic) uint16_t tmpPort; // Network byte order
 
 - (void) didResolveService:(DNSServiceErrorType)error hostName:(NSString*)hostName txtData:(NSData*)_txtData;
 
@@ -41,7 +42,7 @@ static void getAddrInfoCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint
 
         // Set port if not set
         struct sockaddr_in* sin = (struct sockaddr_in*)address;
-        if( sin->sin_port == 0 ) sin->sin_port = serviceResolver.port;
+        if( sin->sin_port == 0 ) sin->sin_port = serviceResolver.tmpPort;
 
         NSData* addressData = [NSData dataWithBytes:address length:sizeof(struct sockaddr)];
         for(NSData* existingAddrData in serviceResolver.resolvedAddresses) {
@@ -63,7 +64,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     BOOL moreComing = flags & kDNSServiceFlagsMoreComing;
 
     if (errorCode == kDNSServiceErr_NoError) {
-        serviceResolver.port = NSSwapBigShortToHost(port);
+        serviceResolver.tmpPort = port; // Keep network byte ordering since we will use this in struct sockaddr_in
 
         // Get IP-address(es)
         DNSServiceRef getInfoRef;
@@ -88,7 +89,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 
 @synthesize delegate,
     name, type, domain, includeP2P,
-    resolved, resolvedHostName, resolvedAddresses, txtData, port;
+    resolved, resolvedHostName, resolvedAddresses, txtData, tmpPort;
 
 
 #pragma mark -

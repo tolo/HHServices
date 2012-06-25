@@ -31,7 +31,7 @@
 
 @property (nonatomic, readonly) BOOL resolved;
 @property (nonatomic, retain, readonly) NSString* resolvedHostName;
-@property (nonatomic, retain, readonly) NSArray* resolvedAddresses;
+@property (nonatomic, retain, readonly) NSArray* resolvedAddresses; // struct sockaddr/sockaddr_in represented as NSData*
 @property (nonatomic, retain, readonly) NSData* txtData;
 
 
