@@ -37,8 +37,27 @@ Resolve service
     	...
     	NSArray* rawAddresses = service.resolvedAddresses;
 	    for (NSData* addressData in rawAddresses) {
-		    struct sockaddr* address = (struct sockaddr*)[addressData bytes];
-		    ...
+            struct sockaddr* address = (struct sockaddr*)[addressData bytes];
+		    
+            // Create yourself a nice little socket:
+            CFSocketSignature signature;
+            signature.protocolFamily = PF_INET;
+            signature.socketType = SOCK_STREAM;
+            signature.protocol = IPPROTO_TCP;
+            signature.address = CFDataCreate(kCFAllocatorDefault, (const UInt8*)address, address->sa_len);;
+            CFReadStreamRef readStream;
+            CFWriteStreamRef writeStream;
+            CFStreamCreatePairWithPeerSocketSignature(kCFAllocatorDefault, &signature, &readStream, &writeStream);
+		
+            NSInputStream *inputStream = (NSInputStream *)readStream;
+            NSOutputStream *outputStream = (NSOutputStream *)writeStream;
+            [inputStream setDelegate:self];
+            [outputStream setDelegate:self];
+            [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            [inputStream open];
+            [outputStream open];
+            ...
 	    }
     	...
     }
