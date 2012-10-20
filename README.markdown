@@ -11,15 +11,22 @@ Usage examples
 Publish service
 ---------------
 
+	NSUInteger serverPort;
+	
+	// Setup your server (maybe using something like GCDAsyncSocket or CocoaHTTPServer etc)
+	...
+	
+	// Setup the service publisher - remember to update the type parameter with your actual service type
     publisher = [[HHServicePublisher alloc] initWithName:@"MyDisplayName"
-                                    type:@"_myservice._tcp." domain:@"local." txtData:nil port:12345];
+                                    type:@"_myexampleservice._tcp." domain:@"local." txtData:nil port:serverPort];
     publisher.delegate = self;
     [publisher beginPublish];
 
 Discover service
 ----------------
 
-    browser = [[HHServiceBrowser alloc] initWithType:@"_myservice._tcp." domain:@"local."];
+	// Browse for services - make sure you set the type parameter to your service type
+    browser = [[HHServiceBrowser alloc] initWithType:@"_myexampleservice._tcp." domain:@"local."];
     browser.delegate = self;
     [browser beginBrowse];
     
@@ -39,12 +46,15 @@ Resolve service
 	    for (NSData* addressData in rawAddresses) {
             struct sockaddr* address = (struct sockaddr*)[addressData bytes];
 		    
-            // Create yourself a nice little socket:
+            // Create yourself a nice little socket. For example if you're using HTTP, set up 
+            // the connection using for example ASIHTTPRequest or AFNetworking. Or if you 
+            // want to use a custom TCP protocol, have a look GCDAsyncSocket or roll your own 
+            // with something this:
             CFSocketSignature signature;
             signature.protocolFamily = PF_INET;
             signature.socketType = SOCK_STREAM;
             signature.protocol = IPPROTO_TCP;
-            signature.address = CFDataCreate(kCFAllocatorDefault, (const UInt8*)address, address->sa_len);;
+            signature.address = CFDataCreate(kCFAllocatorDefault, (const UInt8*)address, address->sa_len);
             CFReadStreamRef readStream;
             CFWriteStreamRef writeStream;
             CFStreamCreatePairWithPeerSocketSignature(kCFAllocatorDefault, &signature, &readStream, &writeStream);
