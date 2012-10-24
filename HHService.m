@@ -93,7 +93,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     
     if (errorCode == kDNSServiceErr_NoError) {
         resolveResult = [[ResolveResult alloc] init];
-        resolveResult.hostName = [[NSString alloc] initWithCString:hosttarget encoding:NSUTF8StringEncoding];
+        resolveResult.hostName = newName;
         resolveResult.port = port; // Keep network byte ordering since we will use this in struct sockaddr_in
         resolveResult.interfaceIndex = interfaceIndex;
     }
