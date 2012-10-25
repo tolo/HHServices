@@ -109,7 +109,10 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 #pragma mark HHService
 
 
-@implementation HHService
+@implementation HHService {
+    DNSServiceRef resolveRef;
+    DNSServiceRef getAddressInfoRef;
+}
 
 @synthesize delegate,
     name, type, domain, includeP2P,
@@ -191,6 +194,18 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     [super dealloc];
 }
 
+- (void) doDestroy {
+    if ( resolveRef != NULL ) {
+        DNSServiceRefDeallocate(resolveRef);
+        resolveRef = NULL;
+    }
+    if ( getAddressInfoRef != NULL ) {
+        DNSServiceRefDeallocate(getAddressInfoRef);
+        getAddressInfoRef = NULL;
+    }
+    [super doDestroy];
+}
+
 
 #pragma mark -
 #pragma mark Get address info methods (resolve step2)
@@ -199,13 +214,14 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 - (void) getNextAddressInfo {
     ResolveResult* result = [self.resolveResults lastObject];
     if( result ) {
-        [self closeConnection];
+        if ( getAddressInfoRef != NULL ) {
+            DNSServiceRefDeallocate(getAddressInfoRef);
+        }
+        getAddressInfoRef = self->sdRef;
         
         const char* hosttarget = [result.hostName cStringUsingEncoding:NSUTF8StringEncoding];
-        self.lastError = DNSServiceGetAddrInfo(&self->sdRef, 0, result.interfaceIndex, kDNSServiceProtocol_IPv4, hosttarget, getAddrInfoCallback, result);
-        if( self.lastError == kDNSServiceErr_NoError ) {
-            [super openConnection];
-        } else {
+        self.lastError = DNSServiceGetAddrInfo(&getAddressInfoRef, kDNSServiceFlagsShareConnection, result.interfaceIndex, kDNSServiceProtocol_IPv4, hosttarget, getAddrInfoCallback, result);
+        if( self.lastError != kDNSServiceErr_NoError ) {
             [self dnsServiceError:self.lastError];
         }
     }
@@ -226,15 +242,21 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     const char* _type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
 
-    DNSServiceFlags flags = 0;
-#if TARGET_OS_IPHONE == 1
-    flags |= (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
-#endif
-
-    self.lastError = DNSServiceResolve(&self->sdRef, flags, kDNSServiceInterfaceIndexAny,
-                                       _name, _type, _domain, resolveCallback, self);
+    self.lastError = DNSServiceCreateConnection(&self->sdRef);
     if( self.lastError == kDNSServiceErr_NoError ) {
         [super openConnection];
+        
+        DNSServiceFlags flags = kDNSServiceFlagsShareConnection;
+#if TARGET_OS_IPHONE == 1
+        flags |= (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
+#endif
+        
+        resolveRef = self->sdRef;
+        self.lastError = DNSServiceResolve(&resolveRef, flags, kDNSServiceInterfaceIndexAny,
+                                       _name, _type, _domain, resolveCallback, self);
+        if( self.lastError != kDNSServiceErr_NoError ) {
+            [self dnsServiceError:self.lastError];
+        }
     } else {
         [self dnsServiceError:self.lastError];
     }
