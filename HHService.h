@@ -38,7 +38,7 @@
 - (id) initWithName:(NSString*)svcName type:(NSString*)svcType domain:(NSString*)svcDomain;
 - (id) initWithName:(NSString*)svcName type:(NSString*)svcType domain:(NSString*)svcDomain includeP2P:(BOOL)includeP2P;
 
-- (void) beginResolve;
+- (BOOL) beginResolve;
 - (void) endResolve;
 
 @end

@@ -34,7 +34,7 @@
 - (id) initWithName:(NSString*)name type:(NSString*)type domain:(NSString*)domain txtData:(NSData*)txtData port:(NSUInteger)port;
 - (id) initWithName:(NSString*)name type:(NSString*)type domain:(NSString*)domain txtData:(NSData*)txtData port:(NSUInteger)port includeP2P:(BOOL)includeP2P;
 
-- (void) beginPublish;
+- (BOOL) beginPublish;
 - (void) endPublish;
 
 @end

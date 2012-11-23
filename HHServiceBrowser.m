@@ -8,6 +8,7 @@
 
 #import "HHServiceBrowser.h"
 
+#import "HHServiceSupport+Private.h"
 
 @interface HHServiceBrowser ()
 
@@ -35,9 +36,13 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
     
     NSString* newName = [[NSString alloc] initWithCString:serviceName encoding:NSUTF8StringEncoding];
     NSString* newDomain = [[NSString alloc] initWithCString:replyDomain encoding:NSUTF8StringEncoding];
-    [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
-    [newName release];
-    [newDomain release];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
+        
+        [newName release];
+        [newDomain release];
+    });
 }
 
 
@@ -100,9 +105,7 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 #pragma mark ServicePublisher
 
 
-- (void) beginBrowse {
-    [self doDestroy];
-    
+- (BOOL) beginBrowse {
     const char* _type =  [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
 
@@ -111,27 +114,35 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
     flags = (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
 #endif
 
-    self.lastError = DNSServiceBrowse(&self->sdRef, flags, kDNSServiceInterfaceIndexAny, _type, _domain,
+    DNSServiceRef browseRef = NULL;
+    DNSServiceErrorType err = DNSServiceBrowse(&browseRef, flags, kDNSServiceInterfaceIndexAny, _type, _domain,
                                       browseCallBack, self);
     
-    [super openConnection];
+    if( err == kDNSServiceErr_NoError ) {
+        [self HHLogDebug:@"Beginning browse"];
+        return [super setServiceRef:browseRef];
+    } else {
+        [self HHLogDebug:@"Error starting browse"];
+        [self dnsServiceError:err];
+        return NO;
+    }
 }
 
 - (void) endBrowse {
     [self.resolver endResolve];
     self.resolver = nil;
-    [super closeConnection];
+    [super resetServiceRef];
 }
 
 - (HHService*) resolverForService:(NSString*)name {
     return [[[HHService alloc] initWithName:name type:self.type domain:self.domain includeP2P:self.includeP2P] autorelease];
 }
 
-- (void) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate {
+- (BOOL) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate {
     if( self.resolver ) [self.resolver endResolve];
     self.resolver = [self resolverForService:name];
     self.resolver.delegate = resolveDelegate;
-    [self.resolver beginResolve];
+    return [self.resolver beginResolve];
 }
 
 

@@ -8,6 +8,7 @@
 
 #import "HHServicePublisher.h"
 
+#import "HHServiceSupport+Private.h"
 
 @interface HHServicePublisher ()
 
@@ -32,8 +33,11 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
     HHServicePublisher * servicePublisher = (HHServicePublisher *)context;
     
     NSString* newName = [[NSString alloc] initWithCString:name encoding:NSUTF8StringEncoding];
-    [servicePublisher seviceDidRegister:newName error:errorCode];
-    [newName release];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [servicePublisher seviceDidRegister:newName error:errorCode];
+        
+        [newName release];
+    });
 }
 
 
@@ -101,9 +105,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 #pragma mark ServiceConnection
 
 
-- (void) beginPublish {
-    [self doDestroy];
-    
+- (BOOL) beginPublish {
     const char* _name = [self.name cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
@@ -117,14 +119,20 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
     flags = (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
 #endif
 
-    self.lastError = DNSServiceRegister(&self->sdRef, flags, kDNSServiceInterfaceIndexAny, _name, _type, _domain, NULL,
+    DNSServiceRef registerRef;
+    DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, kDNSServiceInterfaceIndexAny, _name, _type, _domain, NULL,
                                         bigEndianPort, _txtLen, _txtData, registerServiceCallBack, self);
     
-    [super openConnection];
+    if( err == kDNSServiceErr_NoError ) {
+        return [super setServiceRef:registerRef];
+    } else {
+        [self dnsServiceError:err];
+        return NO;
+    }
 }
 
 - (void) endPublish {
-    [super closeConnection];
+    [super resetServiceRef];
 }
 
 

@@ -7,44 +7,44 @@
 //
 
 #import "HHServiceSupport.h"
+#import "HHServiceSupport+Private.h"
 
 
-static void sdRefSocketCallback(CFSocketRef s, CFSocketCallBackType type, CFDataRef address,
-                                const void* data, void* info) {
-    HHServiceSupport *serviceConnection = (HHServiceSupport *)info;
-    
-    DNSServiceErrorType err = DNSServiceProcessResult(serviceConnection.sdRef); // Will result in registered callback beeing invoked
-    if (err != kDNSServiceErr_NoError) {
-        [serviceConnection dnsServiceError:err];
-    }
+@implementation HHServiceSupport {
+    DNSServiceRef sdRef;
+    dispatch_queue_t sdDispatchQueue;
 }
 
-
-#pragma mark -
-#pragma mark "Private" interface
+@synthesize sdDispatchQueue, lastError;
 
 
-@interface HHServiceSupport ()
-
-@property (nonatomic, readwrite) DNSServiceRef sdRef;
-@property (nonatomic, readwrite) CFSocketRef sdRefSocket;
-@property (nonatomic, readwrite) CFRunLoopSourceRef runLoopSource;
-
-@end
-
-
-@implementation HHServiceSupport
-
-@synthesize sdRef, sdRefSocket, runLoopSource, 
-    lastError;
+- (void) HHLogDebug:(NSString*)format, ... {
+#ifdef DEBUG
+    va_list vl;
+    va_start(vl, format);
+    NSString* logMessage = [[[NSString alloc] initWithFormat:format arguments:vl] autorelease];
+    NSLog(@"%@ - %@", self, logMessage);
+    va_end(vl);
+#endif
+}
 
 
 #pragma mark -
 #pragma mark Creation and destruction
 
 
+- (id) init {
+    self = [super init];
+    if (self) {
+        sdDispatchQueue = dispatch_queue_create("se.leafnode.HHServices.sdDispatchQueue", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
+
 - (void) dealloc {
     [self doDestroy];
+    
+    dispatch_release(sdDispatchQueue);
     
     [super dealloc];
 }
@@ -55,19 +55,6 @@ static void sdRefSocketCallback(CFSocketRef s, CFSocketCallBackType type, CFData
 
 
 - (void) doDestroy {
-    if( runLoopSource != NULL ) {
-        CFRunLoopRemoveSource(runLoop, runLoopSource, kCFRunLoopDefaultMode);
-        runLoopSource = NULL;
-    }
-    if( runLoop != NULL ) {
-        CFRelease(runLoop);
-        runLoop = NULL;
-    }
-    if( sdRefSocket != NULL ) {
-        CFSocketInvalidate(sdRefSocket);
-        CFRelease(sdRefSocket);
-        sdRefSocket = NULL;
-    }
     if ( sdRef != NULL ) {
         DNSServiceRefDeallocate(sdRef);
         sdRef = NULL;
@@ -75,6 +62,7 @@ static void sdRefSocketCallback(CFSocketRef s, CFSocketCallBackType type, CFData
 }
 
 - (void) dnsServiceError:(DNSServiceErrorType)error {
+    [self HHLogDebug:@"Error: %d", error];
     lastError = error;
 }
 
@@ -83,30 +71,21 @@ static void sdRefSocketCallback(CFSocketRef s, CFSocketCallBackType type, CFData
 #pragma mark HHServiceSupport
 
 
-- (void) openConnection {
-    if( !sdRef ) lastError = kDNSServiceErr_Unknown;
-    else if (lastError == kDNSServiceErr_NoError) {
-        int fd = DNSServiceRefSockFD(sdRef);
-        if( fd >= 0 ) {
-            CFSocketContext context = {0, self, NULL, NULL, NULL};
-            
-            sdRefSocket = CFSocketCreateWithNative(NULL, fd, kCFSocketReadCallBack, sdRefSocketCallback, &context);
-            if( sdRefSocket != NULL ) {
-                CFSocketSetSocketFlags(sdRefSocket, CFSocketGetSocketFlags(sdRefSocket) & ~kCFSocketCloseOnInvalidate);
-                
-                runLoopSource = CFSocketCreateRunLoopSource(NULL, sdRefSocket, 0);
-                if( runLoopSource != NULL ) {
-                    runLoop = (CFRunLoopRef)CFRetain(CFRunLoopGetCurrent());
-                    CFRunLoopAddSource(runLoop, runLoopSource, kCFRunLoopDefaultMode);
-                    CFRelease(runLoopSource);
-                } else lastError = kDNSServiceErr_Unknown;
-            } else lastError = kDNSServiceErr_Unknown;
-        } else lastError = kDNSServiceErr_Unknown;
-    }
+- (BOOL) setServiceRef:(DNSServiceRef)serviceRef {
+    if( sdRef ) DNSServiceRefDeallocate(sdRef);
+    sdRef = serviceRef;
+    DNSServiceErrorType err = DNSServiceSetDispatchQueue(sdRef, sdDispatchQueue);
+    if( err != kDNSServiceErr_NoError ) {
+        [self dnsServiceError:err];
+        return NO;
+    } else return YES;
 }
 
-- (void) closeConnection {
-    [self doDestroy];
+- (void) resetServiceRef {
+    if ( sdRef != NULL ) {
+        DNSServiceRefDeallocate(sdRef);
+        sdRef = NULL;
+    }
 }
 
 - (BOOL) hasFailed {

@@ -7,24 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#include <dns_sd.h>
+#import <dns_sd.h>
+#import "HHSharedServiceConnection.h"
 
-@interface HHServiceSupport : NSObject {
-    @private
-        CFRunLoopRef runLoop;
-    @protected
-        DNSServiceRef sdRef;
-}
-
-@property (nonatomic, readonly) DNSServiceRef sdRef;
+@interface HHServiceSupport : NSObject
 
 @property (nonatomic, assign) DNSServiceErrorType lastError;
 @property (nonatomic, readonly) BOOL hasFailed;
 
-- (void) doDestroy;
 - (void) dnsServiceError:(DNSServiceErrorType)error;
 
-- (void) openConnection;
-- (void) closeConnection;
+- (BOOL) setServiceRef:(DNSServiceRef)serviceRef;
+- (void) resetServiceRef;
 
 @end

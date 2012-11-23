@@ -33,9 +33,9 @@
 - (id) initWithType:(NSString*)svcType domain:(NSString*)svcDomain includeP2P:(BOOL)includeP2P;
 
 - (HHService*) resolverForService:(NSString*)name;
-- (void) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate;
+- (BOOL) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate;
 
-- (void) beginBrowse;
+- (BOOL) beginBrowse;
 - (void) endBrowse;
 
 @end

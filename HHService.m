@@ -8,8 +8,10 @@
 
 #import "HHService.h"
 
+#import "HHServiceSupport+Private.h"
 #import <netinet/in.h>
 #import <arpa/inet.h>
+#import <net/if.h>
 
 
 @interface ResolveResult : NSObject
@@ -48,8 +50,8 @@
 
 @property (nonatomic, retain) NSMutableArray* resolveResults;
 
-- (void) didResolveServiceInfo:(DNSServiceErrorType)error resolveResult:(ResolveResult*)resolveResult txtData:(NSData*)svcTxtData moreComing:(BOOL)moreComing;
-- (void) didResolveServiceAddresses:(DNSServiceErrorType)error;
+- (void) didResolveService:(ResolveResult*)resolveResult txtData:(NSData*)svcTxtData moreComing:(BOOL)moreComing error:(DNSServiceErrorType)error;
+- (void) didResolveServiceAddress:(NSData*)addressData error:(DNSServiceErrorType)error;
 
 @end
 
@@ -63,22 +65,20 @@ static void getAddrInfoCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint
 
     ResolveResult* resolveResult = (ResolveResult*)context;
     HHService* serviceResolver = resolveResult.serviceResolver;
-    if (errorCode == kDNSServiceErr_NoError) {
+    NSData* addressData = nil;
+    if ( errorCode == kDNSServiceErr_NoError ) {
 
         // Set port if not set
         struct sockaddr_in* sin = (struct sockaddr_in*)address;
         if( sin->sin_port == 0 ) sin->sin_port = resolveResult.port;
 
-        NSData* addressData = [NSData dataWithBytes:address length:sizeof(struct sockaddr)];
-        for(NSData* existingAddrData in serviceResolver.resolvedAddresses) {
-            if ( [existingAddrData isEqualToData:addressData] ) {
-                addressData = nil; // Adress already added
-                break;
-            }
-        }
-        if( addressData ) [(NSMutableArray*)serviceResolver.resolvedAddresses addObject:addressData];
+        addressData = [[NSData alloc] initWithBytes:address length:sizeof(struct sockaddr)];
     }
-    [serviceResolver didResolveServiceAddresses:errorCode];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [serviceResolver didResolveServiceAddress:addressData error:errorCode];
+        
+        [addressData release];
+    });
 }
 
 static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex, DNSServiceErrorType errorCode,
@@ -92,16 +92,24 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     NSString* newName = [[NSString alloc] initWithCString:hosttarget encoding:NSUTF8StringEncoding];
     
     if (errorCode == kDNSServiceErr_NoError) {
-        resolveResult = [[ResolveResult alloc] init];
-        resolveResult.hostName = newName;
-        resolveResult.port = port; // Keep network byte ordering since we will use this in struct sockaddr_in
-        resolveResult.interfaceIndex = interfaceIndex;
+        char interfaceName[IFNAMSIZ];
+        if( if_indextoname(interfaceIndex, interfaceName) != NULL ) {
+            [serviceResolver HHLogDebug:@"Resolved host %@, port %d, interface index %d ('%s') - getting address info", newName, port, interfaceIndex, interfaceName];
+            resolveResult = [[ResolveResult alloc] init];
+            resolveResult.hostName = newName;
+            resolveResult.port = port; // Keep network byte ordering since we will use this in struct sockaddr_in
+            resolveResult.interfaceIndex = interfaceIndex;
+        } else {
+            [serviceResolver HHLogDebug:@"Resolve returned invalid interface index (%d)", interfaceIndex];
+        }
     }
 
-    [serviceResolver didResolveServiceInfo:errorCode resolveResult:resolveResult txtData:[NSData dataWithBytes:txtRecord length:txtLen] moreComing:moreComing];
-    
-    [resolveResult release];
-    [newName release];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [serviceResolver didResolveService:resolveResult txtData:[NSData dataWithBytes:txtRecord length:txtLen] moreComing:moreComing error:errorCode];
+        
+        [resolveResult release];
+        [newName release];
+    });
 }
 
 
@@ -110,8 +118,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 
 
 @implementation HHService {
-    DNSServiceRef resolveRef;
-    DNSServiceRef getAddressInfoRef;
+//    DNSServiceRef getAddressInfoRef;
 }
 
 @synthesize delegate,
@@ -123,33 +130,49 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 #pragma mark Internal methods
 
 
-- (void) didResolveServiceInfo:(DNSServiceErrorType)error resolveResult:(ResolveResult*)resolveResult txtData:(NSData*)svcTxtData moreComing:(BOOL)moreComing {
+- (void) didResolveService:(ResolveResult*)resolveResult txtData:(NSData*)svcTxtData moreComing:(BOOL)moreComing error:(DNSServiceErrorType)error {
     self.lastError = error;
     
-    if (error == kDNSServiceErr_NoError) {
+    if ( error == kDNSServiceErr_NoError ) {
         resolveResult.serviceResolver = self;
         [self.resolveResults addObject:resolveResult];
         if( !moreComing ) {
+            [self HHLogDebug:@"Getting address info for resolved addresses"];
             self.resolvedHostName = resolveResult.hostName;
             self.txtData = svcTxtData;
             [self getNextAddressInfo];
         }
     } else {
+        [self HHLogDebug:@"Error resolving service: %d", error];
         self.resolved = NO;
         [self.delegate serviceDidNotResolve:self];
     }
 }
 
-- (void) didResolveServiceAddresses:(DNSServiceErrorType)error {
-    if (error == kDNSServiceErr_NoError) {
+- (void) didResolveServiceAddress:(NSData*)addressData error:(DNSServiceErrorType)error {
+    self.lastError = error;
+    
+    if ( error == kDNSServiceErr_NoError ) {
+        // Add address if not already added
+        for(NSData* existingAddrData in self.resolvedAddresses) {
+            if ( [existingAddrData isEqualToData:addressData] ) {
+                addressData = nil; // Adress already added
+                break;
+            }
+        }
+        if( addressData ) [(NSMutableArray*)self.resolvedAddresses addObject:addressData];
+        
         [self.resolveResults removeLastObject];
         if( self.resolveResults.count ) {
+            [self HHLogDebug:@"Getting address info for next address"];
             [self getNextAddressInfo];
         } else {
+            [self HHLogDebug:@"Resolved last address"];
             self.resolved = YES;
             [self.delegate serviceDidResolve:self];
         }
     } else {
+        [self HHLogDebug:@"Error getting address info: %d", error];
         self.resolved = NO;
         [self.delegate serviceDidNotResolve:self];
     }
@@ -194,17 +217,13 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     [super dealloc];
 }
 
-- (void) doDestroy {
-    if ( resolveRef != NULL ) {
-        DNSServiceRefDeallocate(resolveRef);
-        resolveRef = NULL;
-    }
-    if ( getAddressInfoRef != NULL ) {
-        DNSServiceRefDeallocate(getAddressInfoRef);
-        getAddressInfoRef = NULL;
-    }
-    [super doDestroy];
-}
+//- (void) doDestroy {
+//    if ( getAddressInfoRef != NULL ) {
+//        DNSServiceRefDeallocate(getAddressInfoRef);
+//        getAddressInfoRef = NULL;
+//    }
+//    [super doDestroy];
+//}
 
 
 #pragma mark -
@@ -214,14 +233,22 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 - (void) getNextAddressInfo {
     ResolveResult* result = [self.resolveResults lastObject];
     if( result ) {
-        if ( getAddressInfoRef != NULL ) {
-            DNSServiceRefDeallocate(getAddressInfoRef);
-        }
-        getAddressInfoRef = self->sdRef;
+//        if( getAddressInfoRef ) {
+//            DNSServiceRefDeallocate(getAddressInfoRef);
+//        }
+//        DNSServiceRef getAddressInfoRef = self.sharedConnection.connectionRef;
+//        getAddressInfoRef = NULL;
+        DNSServiceRef getAddressInfoRef = NULL;
         
         const char* hosttarget = [result.hostName cStringUsingEncoding:NSUTF8StringEncoding];
-        self.lastError = DNSServiceGetAddrInfo(&getAddressInfoRef, kDNSServiceFlagsShareConnection, result.interfaceIndex, kDNSServiceProtocol_IPv4, hosttarget, getAddrInfoCallback, result);
-        if( self.lastError != kDNSServiceErr_NoError ) {
+//        DNSServiceErrorType err = DNSServiceGetAddrInfo(&getAddressInfoRef, kDNSServiceFlagsShareConnection, result.interfaceIndex, kDNSServiceProtocol_IPv4, hosttarget, getAddrInfoCallback, result);
+        DNSServiceErrorType err = DNSServiceGetAddrInfo(&getAddressInfoRef, 0, result.interfaceIndex, kDNSServiceProtocol_IPv4, hosttarget, getAddrInfoCallback, result);
+        
+        if( err == kDNSServiceErr_NoError ) {
+            [self HHLogDebug:@"Beginning address lookup"];
+            [super setServiceRef:getAddressInfoRef];
+        } else {
+            [self HHLogDebug:@"Error doing address lookup"];
             [self dnsServiceError:self.lastError];
         }
     }
@@ -232,9 +259,8 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 #pragma mark HHService public methods
 
 
-- (void) beginResolve {
-    [self closeConnection];
-    
+- (BOOL) beginResolve {
+    self.resolved = NO;
     self.resolvedAddresses = [NSMutableArray array];
     self.resolveResults = [NSMutableArray array];
     
@@ -242,28 +268,27 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     const char* _type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
 
-    self.lastError = DNSServiceCreateConnection(&self->sdRef);
-    if( self.lastError == kDNSServiceErr_NoError ) {
-        [super openConnection];
-        
-        DNSServiceFlags flags = kDNSServiceFlagsShareConnection;
+    DNSServiceFlags flags = 0;
 #if TARGET_OS_IPHONE == 1
-        flags |= (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
+    flags |= (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
 #endif
         
-        resolveRef = self->sdRef;
-        self.lastError = DNSServiceResolve(&resolveRef, flags, kDNSServiceInterfaceIndexAny,
-                                       _name, _type, _domain, resolveCallback, self);
-        if( self.lastError != kDNSServiceErr_NoError ) {
-            [self dnsServiceError:self.lastError];
-        }
+    DNSServiceRef resolveRef = nil;
+    DNSServiceErrorType err = DNSServiceResolve(&resolveRef, flags, kDNSServiceInterfaceIndexAny,
+                                   _name, _type, _domain, resolveCallback, self);
+    
+    if( err == kDNSServiceErr_NoError ) {
+        [self HHLogDebug:@"Beginning resolve"];
+        return [super setServiceRef:resolveRef];
     } else {
-        [self dnsServiceError:self.lastError];
+        [self HHLogDebug:@"Error starting resolve"];
+        [self dnsServiceError:err];
+        return NO;
     }
 }
 
 - (void) endResolve {
-    [super closeConnection];
+    [super resetServiceRef];
 }
 
 
@@ -275,11 +300,11 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     return [NSString stringWithFormat:@"%@|%@|%@", self.name, self.type, self.domain];
 }
 
-- (NSUInteger)hash {
+- (NSUInteger) hash {
 	return [self.identityString hash];
 }
 
-- (BOOL)isEqual:(id)anObject {
+- (BOOL) isEqual:(id)anObject {
 	return [anObject isKindOfClass:[self class]] && [self.identityString isEqual:((HHService*)anObject).identityString];
 }
 
