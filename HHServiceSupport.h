@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <dns_sd.h>
-#import "HHSharedServiceConnection.h"
 
 @interface HHServiceSupport : NSObject
 
