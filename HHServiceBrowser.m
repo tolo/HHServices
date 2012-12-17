@@ -31,18 +31,22 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
                            const char *serviceName, const char *regtype, const char *replyDomain, void *context) {
     HHServiceBrowser * serviceBrowser = (HHServiceBrowser *)context;
     
-    BOOL add = flags & kDNSServiceFlagsAdd;
-    BOOL moreComing = flags & kDNSServiceFlagsMoreComing;
-    
-    NSString* newName = [[NSString alloc] initWithCString:serviceName encoding:NSUTF8StringEncoding];
-    NSString* newDomain = [[NSString alloc] initWithCString:replyDomain encoding:NSUTF8StringEncoding];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
+    if( errorCode == kDNSServiceErr_NoError ) {
+        BOOL add = flags & kDNSServiceFlagsAdd;
+        BOOL moreComing = flags & kDNSServiceFlagsMoreComing;
         
-        [newName release];
-        [newDomain release];
-    });
+        NSString* newName = serviceName ? [[NSString alloc] initWithCString:serviceName encoding:NSUTF8StringEncoding] : nil;
+        NSString* newDomain = replyDomain ? [[NSString alloc] initWithCString:replyDomain encoding:NSUTF8StringEncoding] : nil;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
+            
+            [newName release];
+            [newDomain release];
+        });
+    } else {
+        [serviceBrowser dnsServiceError:errorCode];
+    }
 }
 
 

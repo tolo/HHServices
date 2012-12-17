@@ -32,12 +32,16 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
                               const char* name, const char* regType, const char* domain, void* context) {
     HHServicePublisher * servicePublisher = (HHServicePublisher *)context;
     
-    NSString* newName = [[NSString alloc] initWithCString:name encoding:NSUTF8StringEncoding];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [servicePublisher seviceDidRegister:newName error:errorCode];
-        
-        [newName release];
-    });
+    if( errorCode == kDNSServiceErr_NoError ) {
+        NSString* newName = name ? [[NSString alloc] initWithCString:name encoding:NSUTF8StringEncoding] : nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [servicePublisher seviceDidRegister:newName error:errorCode];
+            
+            [newName release];
+        });
+    } else {
+        [servicePublisher dnsServiceError:errorCode];
+    }
 }
 
 
@@ -58,7 +62,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 - (void) seviceDidRegister:(NSString*)newName error:(DNSServiceErrorType)error {
     self.lastError = error;
     if (error == kDNSServiceErr_NoError) {
-        self.name = newName;
+        if( newName ) self.name = newName;
         [self.delegate serviceDidPublish:self];
     } else {
         [self.delegate serviceDidNotPublish:self];
