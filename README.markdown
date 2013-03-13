@@ -37,6 +37,8 @@ Resolve service
         ...
         service.delegate = self;
         [service beginResolve];
+        // Make sure you retain the service object (for instance add it to a list of services currently 
+        // being resolved), otherwise it will be deallocated upon return of this method.
         ...
     }
     
