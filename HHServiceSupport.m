@@ -94,3 +94,27 @@
 
 
 @end
+
+
+
+#pragma mark -
+#pragma mark Utility categories
+
+
+
+@implementation NSDictionary (HHServices)
+
+- (NSData*) dataFromTXTRecordDictionary {
+    return [NSNetService dataFromTXTRecordDictionary:self];
+}
+
+@end
+
+
+@implementation NSData (HHServices)
+
+- (NSDictionary*) dictionaryFromTXTRecordData {
+    return [NSNetService dictionaryFromTXTRecordData:self];
+}
+
+@end

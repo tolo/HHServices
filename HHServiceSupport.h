@@ -20,3 +20,20 @@
 - (void) resetServiceRef;
 
 @end
+
+
+#pragma mark -
+#pragma mark Utility categories
+
+
+@interface NSDictionary (HHServices)
+
+- (NSData*) dataFromTXTRecordDictionary;
+
+@end
+
+@interface NSData (HHServices)
+
+- (NSDictionary*) dictionaryFromTXTRecordData;
+
+@end
