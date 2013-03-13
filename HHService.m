@@ -103,12 +103,15 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
             [serviceResolver HHLogDebug:@"Resolve returned invalid interface index (%d)", interfaceIndex];
         }
     }
+    
+    NSData* txtData = [[NSData alloc] initWithBytes:txtRecord length:txtLen];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [serviceResolver didResolveService:resolveResult txtData:[NSData dataWithBytes:txtRecord length:txtLen] moreComing:moreComing error:errorCode];
+        [serviceResolver didResolveService:resolveResult txtData:txtData moreComing:moreComing error:errorCode];
         
         [resolveResult release];
         [newName release];
+        [txtData release];
     });
 }
 
@@ -314,7 +317,8 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
         const struct sockaddr_in* sin = (struct sockaddr_in*)[self.resolvedAddresses[i] bytes];
 		[addressesAsStrings addObject:[NSString stringWithFormat:@"%@:%d", @(inet_ntoa(sin->sin_addr)), ntohs(sin->sin_port)]];
     }
-    return [NSString stringWithFormat:@"HHService[0x%08X, %@, %@, %@, %@, %@]", (unsigned int)self, self.name, self.type, self.domain, self.resolvedHostName, addressesAsStrings];
+    return [NSString stringWithFormat:@"HHService[0x%08X, %@, %@, %@, %@, %@, %d]", (unsigned int)self,
+            self.name, self.type, self.domain, self.resolvedHostName, addressesAsStrings, txtData.length];
 }
 
 
