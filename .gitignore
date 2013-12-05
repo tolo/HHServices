@@ -1,0 +1,11 @@
+.DS_Store
+
+**/xcuserdata/**
+*.xcuserstate
+*.pbxuser
+*.xccheckout
+*.hmap
+*.ipa
+build/
+
+Pods

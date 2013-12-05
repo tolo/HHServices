@@ -30,18 +30,24 @@
 
 static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, DNSServiceErrorType errorCode,
                               const char* name, const char* regType, const char* domain, void* context) {
-    HHServicePublisher * servicePublisher = (HHServicePublisher *)context;
     
-    if( errorCode == kDNSServiceErr_NoError ) {
-        NSString* newName = name ? [[NSString alloc] initWithCString:name encoding:NSUTF8StringEncoding] : nil;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [servicePublisher seviceDidRegister:newName error:errorCode];
-            
-            [newName release];
-        });
-    } else {
-        [servicePublisher dnsServiceError:errorCode];
+    ContextWrapper* contextWrapper = (ContextWrapper*)context;
+    HHServicePublisher* servicePublisher = contextWrapper.contextRetained;
+    
+    if( servicePublisher ) {
+        if( errorCode == kDNSServiceErr_NoError ) {
+            NSString* newName = name ? [[NSString alloc] initWithCString:name encoding:NSUTF8StringEncoding] : nil;
+            dispatch_async(servicePublisher.mainDispatchQueue, ^{
+                [servicePublisher seviceDidRegister:newName error:errorCode];
+                
+                [newName release];
+            });
+        } else {
+            [servicePublisher dnsServiceError:errorCode];
+        }
     }
+    
+    [servicePublisher release];
 }
 
 
@@ -125,7 +131,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 
     DNSServiceRef registerRef;
     DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, kDNSServiceInterfaceIndexAny, _name, _type, _domain, NULL,
-                                        bigEndianPort, _txtLen, _txtData, registerServiceCallBack, self);
+                                        bigEndianPort, _txtLen, _txtData, registerServiceCallBack, [self setCurrentCallbackContextWithContext:self]);
     
     if( err == kDNSServiceErr_NoError ) {
         return [super setServiceRef:registerRef];

@@ -1,0 +1,268 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F64FD44C17426EE700662294 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64FD44B17426EE700662294 /* Foundation.framework */; };
+		F64FD46217426F4500662294 /* HHService.m in Sources */ = {isa = PBXBuildFile; fileRef = F64FD45A17426F4500662294 /* HHService.m */; };
+		F64FD46317426F4500662294 /* HHServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = F64FD45C17426F4500662294 /* HHServiceBrowser.m */; };
+		F64FD46417426F4500662294 /* HHServicePublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = F64FD45E17426F4500662294 /* HHServicePublisher.m */; };
+		F64FD46517426F4500662294 /* HHServiceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = F64FD46017426F4500662294 /* HHServiceSupport.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F64FD44617426EE700662294 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F64FD44817426EE700662294 /* libHHServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libHHServices.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F64FD44B17426EE700662294 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F64FD44F17426EE700662294 /* HHServices-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HHServices-Prefix.pch"; sourceTree = "<group>"; };
+		F64FD45917426F4500662294 /* HHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHService.h; sourceTree = SOURCE_ROOT; };
+		F64FD45A17426F4500662294 /* HHService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHService.m; sourceTree = SOURCE_ROOT; };
+		F64FD45B17426F4500662294 /* HHServiceBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceBrowser.h; sourceTree = SOURCE_ROOT; };
+		F64FD45C17426F4500662294 /* HHServiceBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServiceBrowser.m; sourceTree = SOURCE_ROOT; };
+		F64FD45D17426F4500662294 /* HHServicePublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServicePublisher.h; sourceTree = SOURCE_ROOT; };
+		F64FD45E17426F4500662294 /* HHServicePublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServicePublisher.m; sourceTree = SOURCE_ROOT; };
+		F64FD45F17426F4500662294 /* HHServiceSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceSupport.h; sourceTree = SOURCE_ROOT; };
+		F64FD46017426F4500662294 /* HHServiceSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServiceSupport.m; sourceTree = SOURCE_ROOT; };
+		F64FD46117426F4500662294 /* HHServiceSupport+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HHServiceSupport+Private.h"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F64FD44517426EE700662294 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F64FD44C17426EE700662294 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F64FD43F17426EE700662294 = {
+			isa = PBXGroup;
+			children = (
+				F64FD44D17426EE700662294 /* HHServices */,
+				F64FD44A17426EE700662294 /* Frameworks */,
+				F64FD44917426EE700662294 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F64FD44917426EE700662294 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F64FD44817426EE700662294 /* libHHServices.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F64FD44A17426EE700662294 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F64FD44B17426EE700662294 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F64FD44D17426EE700662294 /* HHServices */ = {
+			isa = PBXGroup;
+			children = (
+				F64FD45917426F4500662294 /* HHService.h */,
+				F64FD45A17426F4500662294 /* HHService.m */,
+				F64FD45B17426F4500662294 /* HHServiceBrowser.h */,
+				F64FD45C17426F4500662294 /* HHServiceBrowser.m */,
+				F64FD45D17426F4500662294 /* HHServicePublisher.h */,
+				F64FD45E17426F4500662294 /* HHServicePublisher.m */,
+				F64FD45F17426F4500662294 /* HHServiceSupport.h */,
+				F64FD46017426F4500662294 /* HHServiceSupport.m */,
+				F64FD46117426F4500662294 /* HHServiceSupport+Private.h */,
+				F64FD44E17426EE700662294 /* Supporting Files */,
+			);
+			path = HHServices;
+			sourceTree = "<group>";
+		};
+		F64FD44E17426EE700662294 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F64FD44F17426EE700662294 /* HHServices-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F64FD44717426EE700662294 /* HHServices */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F64FD45617426EE700662294 /* Build configuration list for PBXNativeTarget "HHServices" */;
+			buildPhases = (
+				F64FD44417426EE700662294 /* Sources */,
+				F64FD44517426EE700662294 /* Frameworks */,
+				F64FD44617426EE700662294 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HHServices;
+			productName = HHServices;
+			productReference = F64FD44817426EE700662294 /* libHHServices.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F64FD44017426EE700662294 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "Leafnode AB";
+			};
+			buildConfigurationList = F64FD44317426EE700662294 /* Build configuration list for PBXProject "HHServices" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F64FD43F17426EE700662294;
+			productRefGroup = F64FD44917426EE700662294 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F64FD44717426EE700662294 /* HHServices */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F64FD44417426EE700662294 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F64FD46217426F4500662294 /* HHService.m in Sources */,
+				F64FD46317426F4500662294 /* HHServiceBrowser.m in Sources */,
+				F64FD46417426F4500662294 /* HHServicePublisher.m in Sources */,
+				F64FD46517426F4500662294 /* HHServiceSupport.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F64FD45417426EE700662294 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				VALID_ARCHS = "arm64 armv7 armv7s i386";
+			};
+			name = Debug;
+		};
+		F64FD45517426EE700662294 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s i386";
+			};
+			name = Release;
+		};
+		F64FD45717426EE700662294 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/HHServices.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HHServices-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F64FD45817426EE700662294 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/HHServices.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HHServices-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F64FD44317426EE700662294 /* Build configuration list for PBXProject "HHServices" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F64FD45417426EE700662294 /* Debug */,
+				F64FD45517426EE700662294 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F64FD45617426EE700662294 /* Build configuration list for PBXNativeTarget "HHServices" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F64FD45717426EE700662294 /* Debug */,
+				F64FD45817426EE700662294 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F64FD44017426EE700662294 /* Project object */;
+}

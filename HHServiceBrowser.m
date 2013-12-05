@@ -29,24 +29,30 @@
 
 static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t interfaceIndex, DNSServiceErrorType errorCode, 
                            const char *serviceName, const char *regtype, const char *replyDomain, void *context) {
-    HHServiceBrowser * serviceBrowser = (HHServiceBrowser *)context;
     
-    if( errorCode == kDNSServiceErr_NoError ) {
-        BOOL add = flags & kDNSServiceFlagsAdd;
-        BOOL moreComing = flags & kDNSServiceFlagsMoreComing;
-        
-        NSString* newName = serviceName ? [[NSString alloc] initWithCString:serviceName encoding:NSUTF8StringEncoding] : nil;
-        NSString* newDomain = replyDomain ? [[NSString alloc] initWithCString:replyDomain encoding:NSUTF8StringEncoding] : nil;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
+    ContextWrapper* contextWrapper = (ContextWrapper*)context;
+    HHServiceBrowser* serviceBrowser = contextWrapper.contextRetained;
+    
+    if( serviceBrowser ) {
+        if( errorCode == kDNSServiceErr_NoError ) {
+            BOOL add = flags & kDNSServiceFlagsAdd;
+            BOOL moreComing = flags & kDNSServiceFlagsMoreComing;
             
-            [newName release];
-            [newDomain release];
-        });
-    } else {
-        [serviceBrowser dnsServiceError:errorCode];
+            NSString* newName = serviceName ? [[NSString alloc] initWithCString:serviceName encoding:NSUTF8StringEncoding] : nil;
+            NSString* newDomain = replyDomain ? [[NSString alloc] initWithCString:replyDomain encoding:NSUTF8StringEncoding] : nil;
+            
+            dispatch_async(serviceBrowser.mainDispatchQueue, ^{
+                [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
+                
+                [newName release];
+                [newDomain release];
+            });
+        } else {
+            [serviceBrowser dnsServiceError:errorCode];
+        }
     }
+    
+    [serviceBrowser release];
 }
 
 
@@ -120,7 +126,7 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 
     DNSServiceRef browseRef = NULL;
     DNSServiceErrorType err = DNSServiceBrowse(&browseRef, flags, kDNSServiceInterfaceIndexAny, _type, _domain,
-                                      browseCallBack, self);
+                                               browseCallBack, [self setCurrentCallbackContextWithContext:self]);
     
     if( err == kDNSServiceErr_NoError ) {
         [self HHLogDebug:@"Beginning browse"];

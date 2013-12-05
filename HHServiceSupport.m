@@ -10,12 +10,48 @@
 #import "HHServiceSupport+Private.h"
 
 
-@implementation HHServiceSupport {
-    DNSServiceRef sdRef;
-    dispatch_queue_t sdDispatchQueue;
+@implementation ContextWrapper {
+    id context;
 }
 
-@synthesize sdDispatchQueue, lastError;
+- (id) initWithContext:(id)ctx {
+    if (self = [super init]) {
+        context = ctx;
+    }
+    return self;
+}
+
+- (id) context {
+    @synchronized(self) {
+        return context;
+    }
+}
+
+- (id) contextRetained {
+    @synchronized(self) {
+        return [context retain];
+    }
+}
+
+- (void) setContext:(id)ctx {
+    @synchronized(self) {
+        ctx = context;
+    }
+}
+
+- (void) dealloc {
+    [self setContext:nil];
+    [super dealloc];
+}
+
+@end
+
+
+@implementation HHServiceSupport {
+    DNSServiceRef sdRef;
+}
+
+@synthesize sdDispatchQueue, mainDispatchQueue;
 
 
 - (void) HHLogDebug:(NSString*)format, ... {
@@ -37,14 +73,18 @@
     self = [super init];
     if (self) {
         sdDispatchQueue = dispatch_queue_create("se.leafnode.HHServices.sdDispatchQueue", DISPATCH_QUEUE_SERIAL);
+        mainDispatchQueue = dispatch_get_main_queue();
     }
     return self;
 }
 
 - (void) dealloc {
+    self.currentCallbackContext = nil;
+    
     [self doDestroy];
     
     dispatch_release(sdDispatchQueue);
+    dispatch_release(mainDispatchQueue);
     
     [super dealloc];
 }
@@ -63,7 +103,7 @@
 
 - (void) dnsServiceError:(DNSServiceErrorType)error {
     [self HHLogDebug:@"Error: %d", error];
-    lastError = error;
+    self.lastError = error;
 }
 
 
@@ -89,7 +129,20 @@
 }
 
 - (BOOL) hasFailed {
-    return lastError != kDNSServiceErr_NoError;
+    return self.lastError != kDNSServiceErr_NoError;
+}
+
+- (ContextWrapper*) setCurrentCallbackContextWithContext:(id)context {
+    self.currentCallbackContext = [[ContextWrapper alloc] initWithContext:context];
+    return self.currentCallbackContext;
+}
+
+- (void) setMainDispatchQueue:(dispatch_queue_t)dispatchQueue {
+    if( dispatchQueue != mainDispatchQueue ) {
+        dispatch_release(mainDispatchQueue);
+        mainDispatchQueue = dispatchQueue;
+        if( dispatchQueue ) dispatch_retain(dispatchQueue);
+    }
 }
 
 
