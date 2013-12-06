@@ -78,7 +78,19 @@
     return self;
 }
 
+void sdDispatchQueueFinalizer(void* contextWrapper) {
+    [((ContextWrapper*)contextWrapper) release];
+}
+
 - (void) dealloc {
+    if( self.currentCallbackContext ) {
+        self.currentCallbackContext.context = nil;
+        
+        // Setup dispatch queue finalizer to make sure currentCallbackContext is destroyed when queue is destroyed
+        [self.currentCallbackContext retain];
+        dispatch_set_context(sdDispatchQueue, self.currentCallbackContext);
+        dispatch_set_finalizer_f(sdDispatchQueue, sdDispatchQueueFinalizer);
+    }
     self.currentCallbackContext = nil;
     
     [self doDestroy];
