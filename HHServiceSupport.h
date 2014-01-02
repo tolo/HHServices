@@ -15,6 +15,8 @@
 @property (assign) id context;
 @property (readonly) id contextRetained;
 
+- (void) releaseContext;
+
 @end
 
 
@@ -22,7 +24,7 @@
 
 @property (nonatomic, assign) DNSServiceErrorType lastError;
 @property (nonatomic, readonly) BOOL hasFailed;
-@property (nonatomic, strong) ContextWrapper* currentCallbackContext;
+@property (nonatomic, retain) ContextWrapper* currentCallbackContext;
 
 /** If you use HHServices in a different dispatch queue than the main dispatch queue, set this property to that queue. */
 @property (nonatomic, assign) dispatch_queue_t mainDispatchQueue;
@@ -33,7 +35,7 @@
 - (BOOL) setServiceRef:(DNSServiceRef)serviceRef;
 - (void) resetServiceRef;
 
-- (ContextWrapper*) setCurrentCallbackContextWithContext:(id)context;
+- (ContextWrapper*) setCurrentCallbackContextWithSelf;
 
 @end
 

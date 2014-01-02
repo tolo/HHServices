@@ -243,7 +243,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
         
         const char* hosttarget = [result.hostName cStringUsingEncoding:NSUTF8StringEncoding];
         DNSServiceErrorType err = DNSServiceGetAddrInfo(&getAddressInfoRef, 0, result.interfaceIndex, kDNSServiceProtocol_IPv4,
-                                                        hosttarget, getAddrInfoCallback, [self setCurrentCallbackContextWithContext:self]);
+                                                        hosttarget, getAddrInfoCallback, [self setCurrentCallbackContextWithSelf]);
         
         if( err == kDNSServiceErr_NoError ) {
             [self HHLogDebug:@"Beginning address lookup"];
@@ -278,7 +278,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
         
     DNSServiceRef resolveRef = nil;
     DNSServiceErrorType err = DNSServiceResolve(&resolveRef, flags, kDNSServiceInterfaceIndexAny,
-                                   _name, _type, _domain, resolveCallback, [self setCurrentCallbackContextWithContext:self]);
+                                   _name, _type, _domain, resolveCallback, [self setCurrentCallbackContextWithSelf]);
     
     if( err == kDNSServiceErr_NoError ) {
         [self HHLogDebug:@"Beginning resolve"];

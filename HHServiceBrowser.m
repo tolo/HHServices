@@ -52,7 +52,7 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
         }
     }
     
-    [serviceBrowser release];
+    [contextWrapper releaseContext];
 }
 
 
@@ -126,7 +126,7 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 
     DNSServiceRef browseRef = NULL;
     DNSServiceErrorType err = DNSServiceBrowse(&browseRef, flags, kDNSServiceInterfaceIndexAny, _type, _domain,
-                                               browseCallBack, [self setCurrentCallbackContextWithContext:self]);
+                                               browseCallBack, [self setCurrentCallbackContextWithSelf]);
     
     if( err == kDNSServiceErr_NoError ) {
         [self HHLogDebug:@"Beginning browse"];

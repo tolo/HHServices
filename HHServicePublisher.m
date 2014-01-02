@@ -47,7 +47,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
         }
     }
     
-    [servicePublisher release];
+    [contextWrapper releaseContext];
 }
 
 
@@ -131,7 +131,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 
     DNSServiceRef registerRef;
     DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, kDNSServiceInterfaceIndexAny, _name, _type, _domain, NULL,
-                                        bigEndianPort, _txtLen, _txtData, registerServiceCallBack, [self setCurrentCallbackContextWithContext:self]);
+                                        bigEndianPort, _txtLen, _txtData, registerServiceCallBack, [self setCurrentCallbackContextWithSelf]);
     
     if( err == kDNSServiceErr_NoError ) {
         return [super setServiceRef:registerRef];

@@ -33,9 +33,15 @@
     }
 }
 
+- (void) releaseContext {
+    @synchronized(self) {
+        [context release];
+    }
+}
+
 - (void) setContext:(id)ctx {
     @synchronized(self) {
-        ctx = context;
+        context = ctx;
     }
 }
 
@@ -87,7 +93,7 @@ void sdDispatchQueueFinalizer(void* contextWrapper) {
         self.currentCallbackContext.context = nil;
         
         // Setup dispatch queue finalizer to make sure currentCallbackContext is destroyed when queue is destroyed
-        [self.currentCallbackContext retain];
+        [self.currentCallbackContext retain]; // Note: this will cause analyzer warning of potentially leaked object, which can be ignored
         dispatch_set_context(sdDispatchQueue, self.currentCallbackContext);
         dispatch_set_finalizer_f(sdDispatchQueue, sdDispatchQueueFinalizer);
     }
@@ -144,8 +150,8 @@ void sdDispatchQueueFinalizer(void* contextWrapper) {
     return self.lastError != kDNSServiceErr_NoError;
 }
 
-- (ContextWrapper*) setCurrentCallbackContextWithContext:(id)context {
-    self.currentCallbackContext = [[ContextWrapper alloc] initWithContext:context];
+- (ContextWrapper*) setCurrentCallbackContextWithSelf {
+    self.currentCallbackContext = [[[ContextWrapper alloc] initWithContext:self] autorelease];
     return self.currentCallbackContext;
 }
 
