@@ -53,6 +53,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC3C7D1BD36E02D26E756BC7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			path = ../../HHServices;
+			sourceTree = "<group>";
+		};
 		F64FD43F17426EE700662294 = {
 			isa = PBXGroup;
 			children = (
@@ -91,6 +99,7 @@
 				F64FD46017426F4500662294 /* HHServiceSupport.m */,
 				F64FD46117426F4500662294 /* HHServiceSupport+Private.h */,
 				F64FD44E17426EE700662294 /* Supporting Files */,
+				CC3C7D1BD36E02D26E756BC7 /* Products */,
 			);
 			path = HHServices;
 			sourceTree = "<group>";

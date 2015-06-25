@@ -84,7 +84,7 @@
     [service endResolve];
     resolvingService = nil;
     
-    NSString* message = [NSString stringWithFormat:@"Service did resolve: %@", service];
+    NSString* message = [NSString stringWithFormat:@"Service did resolve: %@", [service.resolvedInetAddresses firstObject]];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Resolve result" message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alert show];
 }

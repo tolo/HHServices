@@ -31,7 +31,12 @@
 
 @property (nonatomic, readonly) BOOL resolved;
 @property (nonatomic, retain, readonly) NSString* resolvedHostName;
-@property (nonatomic, retain, readonly) NSArray* resolvedAddresses; // struct sockaddr/sockaddr_in represented as NSData*
+
+/** Resolved addresses represented as struct sockaddr/sockaddr_in wrapped in NSData* */
+@property (nonatomic, retain, readonly) NSArray* resolvedAddresses;
+/** Resolved internet addresses, on the format IP:PORT (e.g. 10.0.0.1:12345) */
+@property (nonatomic, retain, readonly) NSArray* resolvedInetAddresses;
+
 @property (nonatomic, retain, readonly) NSData* txtData;
 
 

@@ -72,8 +72,10 @@ static void getAddrInfoCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint
         if ( errorCode == kDNSServiceErr_NoError ) {
 
             // Set port if not set
-            struct sockaddr_in* sin = (struct sockaddr_in*)address;
-            if( sin->sin_port == 0 ) sin->sin_port = serviceResolver.lastResolvedPort;
+            if( address->sa_family == AF_INET ) {
+                struct sockaddr_in* sin = (struct sockaddr_in*)address;
+                if( sin->sin_port == 0 ) sin->sin_port = serviceResolver.lastResolvedPort;
+            }
 
             addressData = [[NSData alloc] initWithBytes:address length:sizeof(struct sockaddr)];
         }
@@ -294,6 +296,18 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     [super resetServiceRef];
 }
 
+- (NSArray*) resolvedInetAddresses {
+    NSMutableArray* addressesAsStrings = [NSMutableArray array];
+    for (int i=0; i<self.resolvedAddresses.count; i++) {
+        const struct sockaddr* address = (struct sockaddr*)[self.resolvedAddresses[i] bytes];
+        if( address && address->sa_family == AF_INET ) {
+            const struct sockaddr_in* inetAddress = (struct sockaddr_in*)address;
+            [addressesAsStrings addObject:[NSString stringWithFormat:@"%@:%d", @(inet_ntoa(inetAddress->sin_addr)), ntohs(inetAddress->sin_port)]];
+        }
+    }
+    return addressesAsStrings;
+}
+
 
 #pragma mark -
 #pragma mark Equals & hashcode etc
@@ -312,13 +326,8 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 }
 
 - (NSString*) description {
-    NSMutableArray* addressesAsStrings = [NSMutableArray array];
-    for (int i=0; i<self.resolvedAddresses.count; i++) {
-        const struct sockaddr_in* sin = (struct sockaddr_in*)[self.resolvedAddresses[i] bytes];
-		[addressesAsStrings addObject:[NSString stringWithFormat:@"%@:%d", @(inet_ntoa(sin->sin_addr)), ntohs(sin->sin_port)]];
-    }
     return [NSString stringWithFormat:@"HHService[0x%08X, %@, %@, %@, %@, %@, %d]", (unsigned int)self,
-            self.name, self.type, self.domain, self.resolvedHostName, addressesAsStrings, txtData.length];
+            self.name, self.type, self.domain, self.resolvedHostName, self.resolvedInetAddresses, (int)txtData.length];
 }
 
 
