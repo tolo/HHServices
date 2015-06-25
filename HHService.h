@@ -34,8 +34,12 @@
 
 /** Resolved addresses represented as struct sockaddr/sockaddr_in wrapped in NSData* */
 @property (nonatomic, retain, readonly) NSArray* resolvedAddresses;
-/** Resolved internet addresses, on the format IP:PORT (e.g. 10.0.0.1:12345) */
-@property (nonatomic, retain, readonly) NSArray* resolvedInetAddresses;
+/** Resolved internet addresses, represented as NSStrings on the format IP:PORT (e.g. 10.0.0.1:12345) */
+@property (nonatomic, readonly) NSArray* resolvedInetAddresses;
+/** Resolved IP addresses, represented as NSStrings */
+@property (nonatomic, readonly) NSArray* resolvedIPAddresses;
+/** Resolved port numbers, represented as NSNumbers */
+@property (nonatomic, readonly) NSArray* resolvedPortNumbers;
 
 @property (nonatomic, retain, readonly) NSData* txtData;
 

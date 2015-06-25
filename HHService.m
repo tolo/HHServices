@@ -296,16 +296,34 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     [super resetServiceRef];
 }
 
-- (NSArray*) resolvedInetAddresses {
-    NSMutableArray* addressesAsStrings = [NSMutableArray array];
+- (NSArray*) resolvedInetAddresses:(id(^)(const struct sockaddr_in* inetAddress))transformationBlock {
+    NSMutableArray* addresses = [NSMutableArray array];
     for (int i=0; i<self.resolvedAddresses.count; i++) {
         const struct sockaddr* address = (struct sockaddr*)[self.resolvedAddresses[i] bytes];
         if( address && address->sa_family == AF_INET ) {
             const struct sockaddr_in* inetAddress = (struct sockaddr_in*)address;
-            [addressesAsStrings addObject:[NSString stringWithFormat:@"%@:%d", @(inet_ntoa(inetAddress->sin_addr)), ntohs(inetAddress->sin_port)]];
+            [addresses addObject:transformationBlock(inetAddress)];
         }
     }
-    return addressesAsStrings;
+    return addresses;
+}
+
+- (NSArray*) resolvedInetAddresses {
+    return [self resolvedInetAddresses:^id(const struct sockaddr_in *inetAddress) {
+        return [NSString stringWithFormat:@"%@:%d", @(inet_ntoa(inetAddress->sin_addr)), ntohs(inetAddress->sin_port)];
+    }];
+}
+
+- (NSArray*) resolvedIPAddresses {
+    return [self resolvedInetAddresses:^id(const struct sockaddr_in *inetAddress) {
+        return @(inet_ntoa(inetAddress->sin_addr));
+    }];
+}
+
+- (NSArray*) resolvedPortNumbers {
+    return [self resolvedInetAddresses:^id(const struct sockaddr_in *inetAddress) {
+        return @(ntohs(inetAddress->sin_port));
+    }];
 }
 
 
