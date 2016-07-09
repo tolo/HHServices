@@ -116,16 +116,23 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 
 
 - (BOOL) beginBrowse {
+    return [self beginBrowseOverBluetoothOnly:NO];
+}
+
+// per https://developer.apple.com/library/ios/qa/qa1753/_index.html
+- (BOOL) beginBrowseOverBluetoothOnly:(BOOL)bluetoothOnly {
     const char* _type =  [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
 
     DNSServiceFlags flags = 0;
+    
+    // Not sure if this really is limited to iOS nowadays. Leaving it as is for now.
 #if TARGET_OS_IPHONE == 1
     flags = (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
 #endif
 
     DNSServiceRef browseRef = NULL;
-    DNSServiceErrorType err = DNSServiceBrowse(&browseRef, flags, kDNSServiceInterfaceIndexAny, _type, _domain,
+    DNSServiceErrorType err = DNSServiceBrowse(&browseRef, flags, bluetoothOnly ? kDNSServiceInterfaceIndexP2P : kDNSServiceInterfaceIndexAny, _type, _domain,
                                                browseCallBack, [self setCurrentCallbackContextWithSelf]);
     
     if( err == kDNSServiceErr_NoError ) {
