@@ -4,6 +4,11 @@ This little project came about when we wanted to upgrade two of our apps, PlayMe
 
 This framework may not be perfect and it doesn't do everything that NSNetService does, but it handles the most important stuff and hopefully it can be of some use to you too. Enjoy.
 
+Fork by Xaphod
+==============
+
+Xaphod's fork adds the ability to specify that service browsing, publishing, and resolution should be done over Bluetooth only. This is as per Apple's Technical Q&A 1753: https://developer.apple.com/library/ios/qa/qa1753/_index.html
+
 
 Usage examples
 ===============
