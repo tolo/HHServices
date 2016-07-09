@@ -9,6 +9,10 @@ Fork by Xaphod
 
 Xaphod's fork adds the ability to specify that service browsing, publishing, and resolution should be done over Bluetooth only. This is as per Apple's Technical Q&A 1753: https://developer.apple.com/library/ios/qa/qa1753/_index.html
 
+This is useful if you want to have Multipeer Connectivity framework-like functionality, but don't want to degrade your wifi performance because you cannot stopAdvertise() -- for example because it is necessary that peers can constantly connect. NSNetService and Multipeer both have the severe limitation that you cannot limit them to Bluetooth (or wifi) only. HHServices overcomes that.
+
+Xaphod also added a Swift wrapper around both HHServices and CocoaAsyncSocket, called BluepeerObject.swift (if you want to use this, the pod CocoaAsyncSocket must be installed). This wrapper provides a client/server-like dichotomy, and facilitates sending/receiving NSData* objects directly. If you want Multipeer but without wifi performance issues, take a look at BluepeerObject.
+
 
 Usage examples
 ===============
