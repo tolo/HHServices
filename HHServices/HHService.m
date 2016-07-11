@@ -148,7 +148,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 - (void) didResolveService:(ResolveResult*)resolveResult txtData:(NSData*)svcTxtData moreComing:(BOOL)moreComing error:(DNSServiceErrorType)error {
     self.lastError = error;
     
-    if ( error == kDNSServiceErr_NoError ) {
+    if ( error == kDNSServiceErr_NoError && resolveResult ) {
         resolveResult.serviceResolver = self;
         [self.resolveResults addObject:resolveResult];
         if( !moreComing ) {
