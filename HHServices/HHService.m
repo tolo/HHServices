@@ -12,7 +12,7 @@
 #import <netinet/in.h>
 #import <arpa/inet.h>
 #import <net/if.h>
-
+#import <dns_sd.h>
 
 @interface ResolveResult : NSObject
 

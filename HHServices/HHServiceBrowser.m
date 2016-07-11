@@ -7,8 +7,8 @@
 //
 
 #import "HHServiceBrowser.h"
-
 #import "HHServiceSupport+Private.h"
+#import <dns_sd.h>
 
 @interface HHServiceBrowser ()
 

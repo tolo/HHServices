@@ -8,7 +8,7 @@
 
 #import "HHServiceSupport.h"
 #import "HHServiceSupport+Private.h"
-
+#import <dns_sd.h>
 
 @implementation ContextWrapper {
     id context;

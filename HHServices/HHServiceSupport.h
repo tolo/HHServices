@@ -6,9 +6,7 @@
 //  Copyright (c) 2011 Leafnode AB. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <dns_sd.h>
-
+typedef struct _DNSServiceRef_t *DNSServiceRef;
 
 @interface ContextWrapper : NSObject
 
@@ -22,7 +20,7 @@
 
 @interface HHServiceSupport : NSObject
 
-@property (nonatomic, assign) DNSServiceErrorType lastError;
+@property (nonatomic, assign) int32_t lastError;
 @property (nonatomic, readonly) BOOL hasFailed;
 @property (nonatomic, retain) ContextWrapper* currentCallbackContext;
 
@@ -30,7 +28,7 @@
 @property (nonatomic, assign) dispatch_queue_t mainDispatchQueue;
 
 
-- (void) dnsServiceError:(DNSServiceErrorType)error;
+- (void) dnsServiceError:(int32_t)error;
 
 - (BOOL) setServiceRef:(DNSServiceRef)serviceRef;
 - (void) resetServiceRef;

@@ -10,4 +10,5 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.source_files = "HHServices/*.{h,m}"
   s.requires_arc = false
+  #s.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include' }
 end

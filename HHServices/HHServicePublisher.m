@@ -7,8 +7,8 @@
 //
 
 #import "HHServicePublisher.h"
-
 #import "HHServiceSupport+Private.h"
+#import <dns_sd.h>
 
 @interface HHServicePublisher ()
 
