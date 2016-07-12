@@ -17,7 +17,6 @@
 		221D4E161D3455370025C5A5 /* HHServiceSupport+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 221D4E0C1D3455370025C5A5 /* HHServiceSupport+Private.h */; };
 		221D4E171D3455370025C5A5 /* HHServiceSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 221D4E0D1D3455370025C5A5 /* HHServiceSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		221D4E181D3455370025C5A5 /* HHServiceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 221D4E0E1D3455370025C5A5 /* HHServiceSupport.m */; };
-		221D4E1B1D3455F90025C5A5 /* HHServices.h in Headers */ = {isa = PBXBuildFile; fileRef = 221D4E191D3455F90025C5A5 /* HHServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		221D4E1C1D3455F90025C5A5 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 221D4E1A1D3455F90025C5A5 /* Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +32,6 @@
 		221D4E0C1D3455370025C5A5 /* HHServiceSupport+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HHServiceSupport+Private.h"; sourceTree = "<group>"; };
 		221D4E0D1D3455370025C5A5 /* HHServiceSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceSupport.h; sourceTree = "<group>"; };
 		221D4E0E1D3455370025C5A5 /* HHServiceSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServiceSupport.m; sourceTree = "<group>"; };
-		221D4E191D3455F90025C5A5 /* HHServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServices.h; sourceTree = "<group>"; };
 		221D4E1A1D3455F90025C5A5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,7 +65,6 @@
 		221D4E041D3455370025C5A5 /* HHServices */ = {
 			isa = PBXGroup;
 			children = (
-				221D4E191D3455F90025C5A5 /* HHServices.h */,
 				221D4E1A1D3455F90025C5A5 /* Info.plist */,
 				221D4E051D3455370025C5A5 /* HHService.h */,
 				221D4E061D3455370025C5A5 /* HHService.m */,
@@ -92,7 +89,6 @@
 			files = (
 				221D4E161D3455370025C5A5 /* HHServiceSupport+Private.h in Headers */,
 				221D4E131D3455370025C5A5 /* HHServicePublisher.h in Headers */,
-				221D4E1B1D3455F90025C5A5 /* HHServices.h in Headers */,
 				221D4E151D3455370025C5A5 /* HHServices-Prefix.pch in Headers */,
 				221D4E0F1D3455370025C5A5 /* HHService.h in Headers */,
 				221D4E171D3455370025C5A5 /* HHServiceSupport.h in Headers */,
