@@ -48,6 +48,7 @@
 - (id) initWithName:(NSString*)svcName type:(NSString*)svcType domain:(NSString*)svcDomain includeP2P:(BOOL)includeP2P;
 
 - (BOOL) beginResolve;
+- (BOOL) beginResolveOnlyOverBluetooth:(BOOL)bluetoothOnly;
 - (void) endResolve;
 
 @end

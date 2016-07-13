@@ -4,6 +4,15 @@ This little project came about when we wanted to upgrade two of our apps, PlayMe
 
 This framework may not be perfect and it doesn't do everything that NSNetService does, but it handles the most important stuff and hopefully it can be of some use to you too. Enjoy.
 
+Fork by Xaphod
+==============
+
+Key differences: specify Bluetooth-only, build as dynamic framework / Pod (works with Swift)
+
+Xaphod's fork adds the ability to specify that service browsing, publishing, and resolution should be done over Bluetooth only. This is as per Apple's Technical Q&A 1753: https://developer.apple.com/library/ios/qa/qa1753/_index.html. Note that this doesn't stop peers from discovering non-Bluetooth IP addresses of your device(s), but it DOES stop the wifi radio from being placed into adhoc mode multiple times a second (the cause of wifi throughput / performance degredation when using Apple's MultipeerConnectivity framework). NSNetService and Multipeer both have this problem becasue you cannot limit them to Bluetooth (or wifi) only, and (as of iOS 9.3) calling stopAdvertise() only takes effect after 30 seconds or so, meaning you cannot micro-manage stop/start advertising.
+
+Xaphod also created a high-level Swift Pod that looks a lot like Apple's MultipeerConnectivity (because it is designed to be used as a replacement for it), called **Bluepeer**, at https://github.com/xaphod/Bluepeer. Bluepeer uses   HHServices and CocoaAsyncSocket to provide a client/server-like dichotomy, and facilitates sending/receiving NSData* objects directly. If you want Multipeer but without wifi performance issues, take a look at Bluepeer.
+
 
 Usage examples
 ===============

@@ -7,8 +7,8 @@
 //
 
 #import "HHServicePublisher.h"
-
 #import "HHServiceSupport+Private.h"
+#import <dns_sd.h>
 
 @interface HHServicePublisher ()
 
@@ -116,6 +116,11 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 
 
 - (BOOL) beginPublish {
+    return [self beginPublishOverBluetoothOnly:NO];
+}
+
+// per https://developer.apple.com/library/ios/qa/qa1753/_index.html
+- (BOOL) beginPublishOverBluetoothOnly:(BOOL)bluetoothOnly {
     const char* _name = [self.name cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
@@ -125,13 +130,14 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
     uint16_t bigEndianPort = NSSwapHostShortToBig((uint16_t)port);
 
     DNSServiceFlags flags = 0;
+    
+    // Not sure if this really is limited to iOS nowadays. Leaving it as is for now.
 #if TARGET_OS_IPHONE == 1
     flags = (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
 #endif
 
     DNSServiceRef registerRef;
-    DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, kDNSServiceInterfaceIndexAny, _name, _type, _domain, NULL,
-                                        bigEndianPort, _txtLen, _txtData, registerServiceCallBack, [self setCurrentCallbackContextWithSelf]);
+    DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, bluetoothOnly ? kDNSServiceInterfaceIndexP2P : kDNSServiceInterfaceIndexAny, _name, _type, _domain, NULL, bigEndianPort, _txtLen, _txtData, registerServiceCallBack, [self setCurrentCallbackContextWithSelf]);
     
     if( err == kDNSServiceErr_NoError ) {
         return [super setServiceRef:registerRef];

@@ -36,6 +36,7 @@
 - (BOOL) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate;
 
 - (BOOL) beginBrowse;
+- (BOOL) beginBrowseOverBluetoothOnly:(BOOL)bluetoothOnly;
 - (void) endBrowse;
 
 @end

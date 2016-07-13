@@ -12,7 +12,7 @@
 #import <netinet/in.h>
 #import <arpa/inet.h>
 #import <net/if.h>
-
+#import <dns_sd.h>
 
 @interface ResolveResult : NSObject
 
@@ -148,7 +148,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 - (void) didResolveService:(ResolveResult*)resolveResult txtData:(NSData*)svcTxtData moreComing:(BOOL)moreComing error:(DNSServiceErrorType)error {
     self.lastError = error;
     
-    if ( error == kDNSServiceErr_NoError ) {
+    if ( error == kDNSServiceErr_NoError && resolveResult ) {
         resolveResult.serviceResolver = self;
         [self.resolveResults addObject:resolveResult];
         if( !moreComing ) {
@@ -261,8 +261,12 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 #pragma mark -
 #pragma mark HHService public methods
 
-
 - (BOOL) beginResolve {
+    return [self beginResolveOnlyOverBluetooth:NO];
+}
+
+// per https://developer.apple.com/library/ios/qa/qa1753/_index.html
+- (BOOL) beginResolveOnlyOverBluetooth:(BOOL)bluetoothOnly {
     //[super resetServiceRef];
     
     self.resolved = NO;
@@ -274,12 +278,14 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
 
     DNSServiceFlags flags = 0;
+    
+    // Not sure if this really is limited to iOS nowadays. Leaving it as is for now.
 #if TARGET_OS_IPHONE == 1
     flags |= (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
 #endif
         
     DNSServiceRef resolveRef = nil;
-    DNSServiceErrorType err = DNSServiceResolve(&resolveRef, flags, kDNSServiceInterfaceIndexAny,
+    DNSServiceErrorType err = DNSServiceResolve(&resolveRef, flags, bluetoothOnly ? kDNSServiceInterfaceIndexP2P : kDNSServiceInterfaceIndexAny,
                                    _name, _type, _domain, resolveCallback, [self setCurrentCallbackContextWithSelf]);
     
     if( err == kDNSServiceErr_NoError ) {
