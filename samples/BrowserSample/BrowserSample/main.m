@@ -2,8 +2,8 @@
 //  main.m
 //  BrowserSample
 //
-//  Created by Tobias Löfstrand on 2013-09-21.
-//  Copyright (c) 2013 Leafnode AB. All rights reserved.
+//  Copyright (c) Tobias Löfstrand, Leafnode AB.
+//  License: MIT - https://github.com/tolo/HHServices/blob/master/LICENSE
 //
 
 #import <UIKit/UIKit.h>

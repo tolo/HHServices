@@ -14,25 +14,9 @@
 		2757D10D1850CD94003ACBAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D10C1850CD94003ACBAF /* main.m */; };
 		2757D1111850CD94003ACBAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D1101850CD94003ACBAF /* AppDelegate.m */; };
 		2757D1171850CD94003ACBAF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D1161850CD94003ACBAF /* ViewController.m */; };
-		27BB92E01850D724008B2D66 /* libHHServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2757D15E1850D476003ACBAF /* libHHServices.a */; };
+		D2173EE2CC30A1C36A848B56 /* Pods_PublisherSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23958F1151443DD84B987D5 /* Pods_PublisherSample.framework */; };
+		F6B6E75A1D6749F2004AA48A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E7591D6749F2004AA48A /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		2757D15D1850D476003ACBAF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2757D1591850D476003ACBAF /* HHServices.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = F64FD44817426EE700662294;
-			remoteInfo = HHServices;
-		};
-		27BB92DD1850D71D008B2D66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2757D1591850D476003ACBAF /* HHServices.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = F64FD44717426EE700662294;
-			remoteInfo = HHServices;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2757D0FD1850CD94003ACBAF /* PublisherSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PublisherSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,7 +31,11 @@
 		2757D1101850CD94003ACBAF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2757D1151850CD94003ACBAF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		2757D1161850CD94003ACBAF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		2757D1591850D476003ACBAF /* HHServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HHServices.xcodeproj; path = ../../HHServices.xcodeproj; sourceTree = "<group>"; };
+		67F966D56091DB14E655884E /* Pods-PublisherSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PublisherSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PublisherSample/Pods-PublisherSample.debug.xcconfig"; sourceTree = "<group>"; };
+		9F1660A7AE1ED55ED643E2DD /* Pods-PublisherSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PublisherSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-PublisherSample/Pods-PublisherSample.release.xcconfig"; sourceTree = "<group>"; };
+		B23958F1151443DD84B987D5 /* Pods_PublisherSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PublisherSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6B6E7591D6749F2004AA48A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		F6B6E75D1D674A15004AA48A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,10 +43,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27BB92E01850D724008B2D66 /* libHHServices.a in Frameworks */,
 				2757D1031850CD94003ACBAF /* CoreGraphics.framework in Frameworks */,
 				2757D1051850CD94003ACBAF /* UIKit.framework in Frameworks */,
 				2757D1011850CD94003ACBAF /* Foundation.framework in Frameworks */,
+				D2173EE2CC30A1C36A848B56 /* Pods_PublisherSample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,10 +56,12 @@
 		2757D0F41850CD94003ACBAF = {
 			isa = PBXGroup;
 			children = (
-				2757D1591850D476003ACBAF /* HHServices.xcodeproj */,
+				F6B6E75D1D674A15004AA48A /* Podfile */,
+				F6B6E7591D6749F2004AA48A /* Default-568h@2x.png */,
 				2757D1061850CD94003ACBAF /* PublisherSample */,
 				2757D0FF1850CD94003ACBAF /* Frameworks */,
 				2757D0FE1850CD94003ACBAF /* Products */,
+				5B040C739B9C8A296D91FE5D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +79,7 @@
 				2757D1001850CD94003ACBAF /* Foundation.framework */,
 				2757D1021850CD94003ACBAF /* CoreGraphics.framework */,
 				2757D1041850CD94003ACBAF /* UIKit.framework */,
+				B23958F1151443DD84B987D5 /* Pods_PublisherSample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,12 +107,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		2757D15A1850D476003ACBAF /* Products */ = {
+		5B040C739B9C8A296D91FE5D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2757D15E1850D476003ACBAF /* libHHServices.a */,
+				67F966D56091DB14E655884E /* Pods-PublisherSample.debug.xcconfig */,
+				9F1660A7AE1ED55ED643E2DD /* Pods-PublisherSample.release.xcconfig */,
 			);
-			name = Products;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,14 +123,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2757D12F1850CD95003ACBAF /* Build configuration list for PBXNativeTarget "PublisherSample" */;
 			buildPhases = (
+				0C08D25292F34EAA51C00240 /* [CP] Check Pods Manifest.lock */,
 				2757D0F91850CD94003ACBAF /* Sources */,
 				2757D0FA1850CD94003ACBAF /* Frameworks */,
 				2757D0FB1850CD94003ACBAF /* Resources */,
+				8136761993DB3411C20ED12A /* [CP] Embed Pods Frameworks */,
+				95DABD7C0717A61D7CD1510E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				27BB92DE1850D71D008B2D66 /* PBXTargetDependency */,
 			);
 			name = PublisherSample;
 			productName = PublisherSample;
@@ -151,7 +145,7 @@
 		2757D0F51850CD94003ACBAF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Leafnode AB";
 			};
 			buildConfigurationList = 2757D0F81850CD94003ACBAF /* Build configuration list for PBXProject "PublisherSample" */;
@@ -165,12 +159,6 @@
 			mainGroup = 2757D0F41850CD94003ACBAF;
 			productRefGroup = 2757D0FE1850CD94003ACBAF /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 2757D15A1850D476003ACBAF /* Products */;
-					ProjectRef = 2757D1591850D476003ACBAF /* HHServices.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				2757D0FC1850CD94003ACBAF /* PublisherSample */,
@@ -178,26 +166,65 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		2757D15E1850D476003ACBAF /* libHHServices.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libHHServices.a;
-			remoteRef = 2757D15D1850D476003ACBAF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		2757D0FB1850CD94003ACBAF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				2757D10B1850CD94003ACBAF /* InfoPlist.strings in Resources */,
+				F6B6E75A1D6749F2004AA48A /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0C08D25292F34EAA51C00240 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8136761993DB3411C20ED12A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PublisherSample/Pods-PublisherSample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		95DABD7C0717A61D7CD1510E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PublisherSample/Pods-PublisherSample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2757D0F91850CD94003ACBAF /* Sources */ = {
@@ -211,14 +238,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		27BB92DE1850D71D008B2D66 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = HHServices;
-			targetProxy = 27BB92DD1850D71D008B2D66 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2757D1091850CD94003ACBAF /* InfoPlist.strings */ = {
@@ -236,7 +255,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -251,6 +269,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -276,7 +295,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -308,13 +326,13 @@
 		};
 		2757D1301850CD95003ACBAF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 67F966D56091DB14E655884E /* Pods-PublisherSample.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PublisherSample/PublisherSample-Prefix.pch";
 				INFOPLIST_FILE = "PublisherSample/PublisherSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "se.leafnode.HHServices.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -322,13 +340,13 @@
 		};
 		2757D1311850CD95003ACBAF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F1660A7AE1ED55ED643E2DD /* Pods-PublisherSample.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PublisherSample/PublisherSample-Prefix.pch";
 				INFOPLIST_FILE = "PublisherSample/PublisherSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "se.leafnode.HHServices.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

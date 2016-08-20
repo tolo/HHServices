@@ -2,8 +2,8 @@
 //  ViewController.m
 //  PublisherSample
 //
-//  Created by Tobias Löfstrand on 2013-09-21.
-//  Copyright (c) 2013 Leafnode AB. All rights reserved.
+//  Copyright (c) Tobias Löfstrand, Leafnode AB.
+//  License: MIT - https://github.com/tolo/HHServices/blob/master/LICENSE
 //
 
 #import "ViewController.h"
@@ -21,7 +21,7 @@
         NSUInteger serverPort = 12345;
         
         // Setup the service publisher - remember to update the type parameter with your actual service type
-        publisher = [[HHServicePublisher alloc] initWithName:@"MyDisplayName"
+        publisher = [[HHServicePublisher alloc] initWithName:@"PublisherSample"
                                                         type:@"_myexampleservice._tcp." domain:@"local." txtData:nil port:serverPort];
         publisher.delegate = self;
     }
