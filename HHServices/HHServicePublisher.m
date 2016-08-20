@@ -2,70 +2,58 @@
 //  HHServicePublisher.m
 //  Part of Hejsan-Hoppsan-Services : http://www.github.com/tolo/HHServices
 //
-//  Created by Tobias on 2011-11-02.
-//  Copyright (c) 2011 Leafnode AB. All rights reserved.
+//  Copyright (c) Tobias Löfstrand, Leafnode AB.
+//  License: MIT - https://github.com/tolo/HHServices/blob/master/LICENSE
 //
 
 #import "HHServicePublisher.h"
 
-#import "HHServiceSupport+Private.h"
+#import "HHServiceDiscoveryOperation+Private.h"
+
 
 @interface HHServicePublisher ()
 
 // Redefinition of read only properties to readwrite
-@property (nonatomic, retain, readwrite) NSString* name;
-@property (nonatomic, retain, readwrite) NSString* type;
-@property (nonatomic, retain, readwrite) NSString* domain;
+@property (nonatomic, strong, readwrite) NSString* name;
+@property (nonatomic, strong, readwrite) NSString* type;
+@property (nonatomic, strong, readwrite) NSString* domain;
 @property (nonatomic) NSUInteger port;
 @property (nonatomic) BOOL includeP2P;
 
-- (void) seviceDidRegister:(NSString*)newName error:(DNSServiceErrorType)error;
+- (void) serviceDidRegister:(NSString*)newName error:(DNSServiceErrorType)error;
 
 @end
 
 
-#pragma mark -
-#pragma mark Callbacks
-
+#pragma mark - Callbacks
 
 static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, DNSServiceErrorType errorCode,
                               const char* name, const char* regType, const char* domain, void* context) {
     
-    ContextWrapper* contextWrapper = (ContextWrapper*)context;
-    HHServicePublisher* servicePublisher = contextWrapper.contextRetained;
+    HHServiceDiscoveryOperationCallbackContext* callbackContext = (__bridge HHServiceDiscoveryOperationCallbackContext*)context;
+    HHServicePublisher* servicePublisher = (HHServicePublisher*)callbackContext.operation;
     
     if( servicePublisher ) {
         if( errorCode == kDNSServiceErr_NoError ) {
             NSString* newName = name ? [[NSString alloc] initWithCString:name encoding:NSUTF8StringEncoding] : nil;
-            dispatch_async(servicePublisher.mainDispatchQueue, ^{
-                [servicePublisher seviceDidRegister:newName error:errorCode];
-                
-                [newName release];
+            dispatch_async(servicePublisher.effectiveMainDispatchQueue, ^{
+                [servicePublisher serviceDidRegister:newName error:errorCode];
             });
         } else {
             [servicePublisher dnsServiceError:errorCode];
         }
     }
-    
-    [contextWrapper releaseContext];
 }
 
 
-#pragma mark -
-#pragma mark HHServicePublisher
-
+#pragma mark - HHServicePublisher
 
 @implementation HHServicePublisher
 
-@synthesize name, type, domain, txtData, port, includeP2P;
-@synthesize delegate;
 
+#pragma mark - Internal methods
 
-#pragma mark -
-#pragma mark Internal methods
-
-
-- (void) seviceDidRegister:(NSString*)newName error:(DNSServiceErrorType)error {
+- (void) serviceDidRegister:(NSString*)newName error:(DNSServiceErrorType)error {
     self.lastError = error;
     if (error == kDNSServiceErr_NoError) {
         if( newName ) self.name = newName;
@@ -81,9 +69,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 }
 
 
-#pragma mark -
-#pragma mark Creation and destruction
-
+#pragma mark - Creation and destruction
 
 - (id) initWithName:(NSString*)svcName type:(NSString*)svcType domain:(NSString*)svcDomain txtData:(NSData*)svcTxtData port:(NSUInteger)svcPort {
     return [self initWithName:svcName type:svcType domain:svcDomain txtData:svcTxtData port:svcPort includeP2P:YES];
@@ -91,47 +77,40 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 
 - (id) initWithName:(NSString*)svcName type:(NSString*)svcType domain:(NSString*)svcDomain txtData:(NSData*)svcTxtData port:(NSUInteger)svcPort includeP2P:(BOOL)svcIncludeP2P {
     if( (self = [super init]) ) {
-        self.name = svcName;
-        self.type = svcType;
-        self.domain = svcDomain;
-        self.txtData = svcTxtData;
-        self.port = svcPort;
-        self.includeP2P = svcIncludeP2P;
+        _name = svcName;
+        _type = svcType;
+        _domain = svcDomain;
+        _txtData = svcTxtData;
+        _port = svcPort;
+        _includeP2P = svcIncludeP2P;
     }
     return self;
 }
 
-- (void) dealloc {
-    self.name = nil;
-    self.type = nil;
-    self.domain = nil;
-    self.txtData = nil;
-    
-    [super dealloc];
-}
 
-
-#pragma mark -
-#pragma mark ServiceConnection
-
+#pragma mark - Publishing
 
 - (BOOL) beginPublish {
-    const char* _name = [self.name cStringUsingEncoding:NSUTF8StringEncoding];
-    const char* _type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
-    const char* _domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
-    const void* _txtData = [self.txtData bytes];
-    uint16_t _txtLen = (uint16_t)self.txtData.length;
+    return [self beginPublish:kDNSServiceInterfaceIndexAny];
+}
 
-    uint16_t bigEndianPort = NSSwapHostShortToBig((uint16_t)port);
+- (BOOL) beginPublishOverBluetoothOnly {
+    return [self beginPublish:kDNSServiceInterfaceIndexP2P];
+}
 
-    DNSServiceFlags flags = 0;
-#if TARGET_OS_IPHONE == 1
-    flags = (uint32_t)(includeP2P ? kDNSServiceFlagsIncludeP2P : 0);
-#endif
+- (BOOL) beginPublish:(uint32_t)interfaceIndex {
+    const char* name = [self.name cStringUsingEncoding:NSUTF8StringEncoding];
+    const char* type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
+    const char* domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
+    const void* txtData = [self.txtData bytes];
+    uint16_t txtLen = (uint16_t)self.txtData.length;
+
+    uint16_t bigEndianPort = NSSwapHostShortToBig((uint16_t)self.port);
 
     DNSServiceRef registerRef;
-    DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, kDNSServiceInterfaceIndexAny, _name, _type, _domain, NULL,
-                                        bigEndianPort, _txtLen, _txtData, registerServiceCallBack, [self setCurrentCallbackContextWithSelf]);
+    DNSServiceFlags flags = self.includeP2P ? kDNSServiceFlagsIncludeP2P : 0;
+    DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, interfaceIndex, name, type, domain, NULL,
+                                        bigEndianPort, txtLen, txtData, registerServiceCallBack, (__bridge void *)([self setCurrentCallbackContextWithSelf]));
     
     if( err == kDNSServiceErr_NoError ) {
         return [super setServiceRef:registerRef];
@@ -146,9 +125,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 }
 
 
-#pragma mark -
-#pragma mark Equals & hashcode etc
-
+#pragma mark - Equals & hashcode etc
 
 - (NSString*) identityString {
     return [NSString stringWithFormat:@"%@|%@|%@", self.name, self.type, self.domain];

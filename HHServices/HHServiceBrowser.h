@@ -2,16 +2,23 @@
 //  HHServiceBrowser.h
 //  Part of Hejsan-Hoppsan-Services : http://www.github.com/tolo/HHServices
 //
-//  Created by Tobias on 2011-11-02.
-//  Copyright (c) 2011 Leafnode AB. All rights reserved.
+//  Copyright (c) Tobias Löfstrand, Leafnode AB.
+//  License: MIT - https://github.com/tolo/HHServices/blob/master/LICENSE
 //
 
-#import "HHServiceSupport.h"
+#import "HHServiceDiscoveryOperation.h"
 #import "HHService.h"
+
+
+NS_ASSUME_NONNULL_BEGIN
+
 
 @class HHServiceBrowser;
 
 
+/**
+ * Delegate protocol for HHServiceBrowser.
+ */
 @protocol HHServiceBrowserDelegate <NSObject>
 
 - (void) serviceBrowser:(HHServiceBrowser*)serviceBrowser didFindService:(HHService*)service moreComing:(BOOL)moreComing;
@@ -20,12 +27,15 @@
 @end
 
 
-@interface HHServiceBrowser : HHServiceSupport
+/**
+ * Provides support for browsing for services of a particular type.
+ */
+@interface HHServiceBrowser : HHServiceDiscoveryOperation
 
-@property (nonatomic, assign) id<HHServiceBrowserDelegate> delegate;
+@property (nonatomic, weak, nullable) id<HHServiceBrowserDelegate> delegate;
 
-@property (nonatomic, retain, readonly) NSString* type;
-@property (nonatomic, retain, readonly) NSString* domain;
+@property (nonatomic, strong, readonly) NSString* type;
+@property (nonatomic, strong, readonly) NSString* domain;
 @property (nonatomic) BOOL includeP2P;
 
 
@@ -36,6 +46,11 @@
 - (BOOL) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate;
 
 - (BOOL) beginBrowse;
+- (BOOL) beginBrowseOverBluetoothOnly;
+- (BOOL) beginBrowse:(uint32_t)interfaceIndex;
 - (void) endBrowse;
 
 @end
+
+
+NS_ASSUME_NONNULL_END
