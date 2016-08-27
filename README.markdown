@@ -8,7 +8,9 @@ This framework may not be perfect and it doesn't do everything that NSNetService
 # Changes in 2.0
 
 * Converted to ARC
-* Added IPv6 support ( ```-[HHService resolvedAddresses]``` is now capable of returning both ```sockaddr_in``` and ```sockaddr_in6``` addresses)
+* Added IPv6 support ( ```HHService``` is now capable of supporting both ```sockaddr_in``` and ```sockaddr_in6``` addresses)
+* API changes in class ```HHService``` related to resolving of host name and addresses (method changes, property changes, introduced class ```HHAddressInfo``` etc)
+* Added ```moreComing``` parameter to ```serviceDidResolve``` method in ```HHServiceDelegate```
 * Added nullability support for better Swift interoperability
 * Added Cocoapods support
 * Added support for restricting service discovery and publishing to Bluetooth only (thanks @xaphod), as well as to a specific interface index
