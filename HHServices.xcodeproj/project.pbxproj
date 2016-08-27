@@ -17,7 +17,6 @@
 		F6B6E7961D68A741004AA48A /* HHServicePublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7891D68A741004AA48A /* HHServicePublisher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6B6E7971D68A741004AA48A /* HHServicePublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6E78A1D68A741004AA48A /* HHServicePublisher.m */; };
 		F6B6E7991D68A741004AA48A /* HHServices.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E78D1D68A741004AA48A /* HHServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F6B6E79A1D68A741004AA48A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E78E1D68A741004AA48A /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +33,8 @@
 		F6B6E78D1D68A741004AA48A /* HHServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServices.h; sourceTree = "<group>"; };
 		F6B6E78E1D68A741004AA48A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6B6E79B1D68A8C1004AA48A /* HHServices-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HHServices-Prefix.pch"; sourceTree = "<group>"; };
+		F6CDB58E1D71DA67000E48CF /* HHServices.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HHServices.podspec; sourceTree = "<group>"; };
+		F6CDB58F1D71DA67000E48CF /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +51,8 @@
 		F6B6E76C1D68A6E0004AA48A = {
 			isa = PBXGroup;
 			children = (
+				F6CDB58E1D71DA67000E48CF /* HHServices.podspec */,
+				F6CDB58F1D71DA67000E48CF /* README.markdown */,
 				F6B6E7811D68A741004AA48A /* HHServices */,
 				F6B6E78C1D68A741004AA48A /* Supporting Files */,
 				F6B6E7771D68A6E0004AA48A /* Products */,
@@ -163,7 +166,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6B6E79A1D68A741004AA48A /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
