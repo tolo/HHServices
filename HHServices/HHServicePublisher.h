@@ -41,11 +41,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 - (id) initWithName:(NSString*)name type:(NSString*)type domain:(NSString*)domain txtData:(nullable NSData*)txtData port:(NSUInteger)port;
-- (id) initWithName:(NSString*)name type:(NSString*)type domain:(NSString*)domain txtData:(nullable NSData*)txtData port:(NSUInteger)port includeP2P:(BOOL)includeP2P;
 
+/** Begins publishing the service using any interface index. */
 - (BOOL) beginPublish;
+
+/** Begins publishing the service over Bluetooth only. */
 - (BOOL) beginPublishOverBluetoothOnly;
-- (BOOL) beginPublish:(uint32_t)interfaceIndex;
+
+/** Begins publishing the service using the specified interface index. If interfaceIndex is kDNSServiceInterfaceIndexAny, P2P (i.e. Bluetooth) interfaces are only enabled if parameter includeP2P is set to YES. */
+- (BOOL) beginPublish:(uint32_t)interfaceIndex includeP2P:(BOOL)includeP2P;
+
+/** Ends an active publish operation. */
 - (void) endPublish;
 
 @end

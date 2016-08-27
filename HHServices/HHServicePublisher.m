@@ -18,7 +18,6 @@
 @property (nonatomic, strong, readwrite) NSString* type;
 @property (nonatomic, strong, readwrite) NSString* domain;
 @property (nonatomic) NSUInteger port;
-@property (nonatomic) BOOL includeP2P;
 
 - (void) serviceDidRegister:(NSString*)newName error:(DNSServiceErrorType)error;
 
@@ -72,17 +71,12 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 #pragma mark - Creation and destruction
 
 - (id) initWithName:(NSString*)svcName type:(NSString*)svcType domain:(NSString*)svcDomain txtData:(NSData*)svcTxtData port:(NSUInteger)svcPort {
-    return [self initWithName:svcName type:svcType domain:svcDomain txtData:svcTxtData port:svcPort includeP2P:YES];
-}
-
-- (id) initWithName:(NSString*)svcName type:(NSString*)svcType domain:(NSString*)svcDomain txtData:(NSData*)svcTxtData port:(NSUInteger)svcPort includeP2P:(BOOL)svcIncludeP2P {
     if( (self = [super init]) ) {
         _name = svcName;
         _type = svcType;
         _domain = svcDomain;
         _txtData = svcTxtData;
         _port = svcPort;
-        _includeP2P = svcIncludeP2P;
     }
     return self;
 }
@@ -91,14 +85,19 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
 #pragma mark - Publishing
 
 - (BOOL) beginPublish {
-    return [self beginPublish:kDNSServiceInterfaceIndexAny];
+    return [self beginPublish:kDNSServiceInterfaceIndexAny includeP2P:YES];
 }
 
 - (BOOL) beginPublishOverBluetoothOnly {
-    return [self beginPublish:kDNSServiceInterfaceIndexP2P];
+    return [self beginPublish:kDNSServiceInterfaceIndexP2P includeP2P:YES];
 }
 
-- (BOOL) beginPublish:(uint32_t)interfaceIndex {
+- (BOOL) beginPublish:(uint32_t)interfaceIndex includeP2P:(BOOL)includeP2P {
+    if( self.serviceRef != nil ) {
+        [self HHLogDebug:@"Publish operation already executing"];
+        return NO;
+    }
+    
     const char* name = [self.name cStringUsingEncoding:NSUTF8StringEncoding];
     const char* type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
@@ -108,7 +107,7 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
     uint16_t bigEndianPort = NSSwapHostShortToBig((uint16_t)self.port);
 
     DNSServiceRef registerRef;
-    DNSServiceFlags flags = self.includeP2P ? kDNSServiceFlagsIncludeP2P : 0;
+    DNSServiceFlags flags = includeP2P ? kDNSServiceFlagsIncludeP2P : 0;
     DNSServiceErrorType err = DNSServiceRegister(&registerRef, flags, interfaceIndex, name, type, domain, NULL,
                                         bigEndianPort, txtLen, txtData, registerServiceCallBack, (__bridge void *)([self setCurrentCallbackContextWithSelf]));
     
