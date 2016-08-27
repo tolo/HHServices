@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 
+#import <dns_sd.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface ViewController ()
@@ -56,9 +57,19 @@
     [button addTarget:self action:@selector(resolve) forControlEvents:UIControlEventTouchUpInside];
     [rootView addSubview:button];
     
+    button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button.frame = CGRectMake(40, 300, 240, 44);
+    [button setTitle:@"Browse again" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(browseAgain) forControlEvents:UIControlEventTouchUpInside];
+    [rootView addSubview:button];
+    
     self.view = rootView;
     
     [browser beginBrowse];
+    
+    // Examples of other browsing options:
+    //[browser beginBrowseOverBluetoothOnly];
+    //[browser beginBrowse:kDNSServiceInterfaceIndexAny includeP2P:NO];
 }
 
 
@@ -69,22 +80,42 @@
     if( !resolvingService && (selectedRow.row + 1) <= browseResult.count ) {
         resolvingService = browseResult[selectedRow.row];
         resolvingService.delegate = self;
-        [resolvingService beginResolve];
+        
+        // Note: use beginResolveOnBrowsedInterface instead to only resolve for the interface index returned by browsing (note that multiple HHService
+        // instances can be returned for the same service while browsing)
+        //[resolvingService beginResolve];
+        
+        // Examples of other resolving options:
+        //[resolvingService beginResolveOverBluetoothOnly];
+        [resolvingService beginResolveOfHostName];
+        //[resolvingService beginResolveOnBrowsedInterface];
+        //[resolvingService beginResolve:resolvingService.browsedInterfaceIndex includeP2P:YES addressLookupProtocols:kDNSServiceProtocol_IPv4];
+        //[resolvingService beginResolve:kDNSServiceInterfaceIndexAny includeP2P:YES addressLookupProtocols:kDNSServiceProtocol_IPv4];
     } else {
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:@"Select a service" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
         [alert show];
     }
 }
 
+- (void) browseAgain {
+    [resolvingService endResolve];
+    resolvingService = nil;
+    
+    [browser endBrowse];
+    [browser beginBrowse];
+}
+
 
 #pragma mark - HHServiceBrowserDelegate & HHServiceDelegate
 
-- (void) serviceDidResolve:(HHService*)service {
-    service.delegate = nil;
-    [service endResolve];
-    resolvingService = nil;
+- (void) serviceDidResolve:(HHService*)service moreComing:(BOOL)moreComing {
+    if( !moreComing ) {
+        service.delegate = nil;
+        [service endResolve];
+        resolvingService = nil;
+    }
     
-    NSString* message = [NSString stringWithFormat:@"Service did resolve: %@", [service.resolvedInetAddresses firstObject]];
+    NSString* message = [NSString stringWithFormat:@"Service did resolve (moreComing: %@): %@ - %@", moreComing ? @"YES" : @"NO", service.resolvedHostName, service.resolvedAddressStrings];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Resolve result" message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alert show];
 }
@@ -100,6 +131,7 @@
 }
 
 - (void) serviceBrowser:(HHServiceBrowser*)serviceBrowser didFindService:(HHService*)service moreComing:(BOOL)moreComing {
+    NSLog(@"Found service: %@", service);
     if( ![browseResult containsObject:service] ) {
         [browseResult addObject:service];
         [tableView reloadData];

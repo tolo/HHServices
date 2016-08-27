@@ -53,6 +53,10 @@
 
 - (void) beginPublish {
     [publisher beginPublish];
+    
+    // Examples of other publishing options:
+    //[publisher beginPublishOverBluetoothOnly];
+    //[publisher beginPublish:kDNSServiceInterfaceIndexAny includeP2P:YES];
 }
 
 - (void) endPublish {

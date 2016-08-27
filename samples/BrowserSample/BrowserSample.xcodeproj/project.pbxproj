@@ -35,7 +35,7 @@
 		5FCB3857552103EA62DFE532 /* Pods-BrowserSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserSample/Pods-BrowserSample.release.xcconfig"; sourceTree = "<group>"; };
 		766AB9528187BE47F6228971 /* Pods_BrowserSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BrowserSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B6E7571D6749E0004AA48A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		F6B6E75B1D674A01004AA48A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		F6B6E75B1D674A01004AA48A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
