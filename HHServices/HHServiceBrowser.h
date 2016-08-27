@@ -36,18 +36,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly) NSString* type;
 @property (nonatomic, strong, readonly) NSString* domain;
-@property (nonatomic) BOOL includeP2P;
 
 
 - (id) initWithType:(NSString*)svcType domain:(NSString*)svcDomain;
-- (id) initWithType:(NSString*)svcType domain:(NSString*)svcDomain includeP2P:(BOOL)includeP2P;
 
 - (HHService*) resolverForService:(NSString*)name;
 - (BOOL) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate;
 
+/** Begins browsing for services using any interface index. */
 - (BOOL) beginBrowse;
+
+/** Begins browsing for services over Bluetooth only. */
 - (BOOL) beginBrowseOverBluetoothOnly;
-- (BOOL) beginBrowse:(uint32_t)interfaceIndex;
+
+/** Begins browsing for services using the specified interface index. If interfaceIndex is kDNSServiceInterfaceIndexAny, P2P (i.e. Bluetooth) interfaces are only enabled if parameter includeP2P is set to YES. */
+- (BOOL) beginBrowse:(uint32_t)interfaceIndex includeP2P:(BOOL)includeP2P;
+
+/** Ends an active browse operation. */
 - (void) endBrowse;
 
 @end

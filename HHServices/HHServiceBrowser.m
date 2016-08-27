@@ -9,6 +9,7 @@
 #import "HHServiceBrowser.h"
 
 #import "HHServiceDiscoveryOperation+Private.h"
+#import <net/if.h>
 
 
 @interface HHServiceBrowser ()
@@ -17,9 +18,12 @@
 @property (nonatomic, strong, readwrite) NSString* type;
 @property (nonatomic, strong, readwrite) NSString* domain;
 
+@property (nonatomic) uint32_t browseInterfaceIndex;
+@property (nonatomic) BOOL browseIncludeP2P;
+
 @property (nonatomic, strong) HHService* resolver;
 
-- (void) browserReceviedResult:(DNSServiceErrorType)error serviceName:(NSString*)serviceName serviceDomain:(NSString*)serviceDomain add:(BOOL)add moreComing:(BOOL)moreComing;
+- (void) browserReceviedResult:(DNSServiceErrorType)error interfaceIndex:(uint32_t)interfaceIndex serviceName:(NSString*)serviceName serviceDomain:(NSString*)serviceDomain add:(BOOL)add moreComing:(BOOL)moreComing;
 
 @end
 
@@ -40,8 +44,12 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
             NSString* newName = serviceName ? [[NSString alloc] initWithCString:serviceName encoding:NSUTF8StringEncoding] : nil;
             NSString* newDomain = replyDomain ? [[NSString alloc] initWithCString:replyDomain encoding:NSUTF8StringEncoding] : nil;
             
+            char interfaceName[IFNAMSIZ];
+            if( if_indextoname(interfaceIndex, interfaceName) == NULL ) {
+                interfaceIndex = kDNSServiceInterfaceIndexAny; // Only return actual (or kDNSServiceInterfaceIndexAny) interface indices
+            }
             dispatch_async(serviceBrowser.effectiveMainDispatchQueue, ^{
-                [serviceBrowser browserReceviedResult:errorCode serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
+                [serviceBrowser browserReceviedResult:errorCode interfaceIndex:interfaceIndex serviceName:newName serviceDomain:newDomain add:add moreComing:moreComing];
             });
         } else {
             [serviceBrowser dnsServiceError:errorCode];
@@ -57,10 +65,18 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 
 #pragma mark - Internal methods
 
-- (void) browserReceviedResult:(DNSServiceErrorType)error serviceName:(NSString*)serviceName serviceDomain:(NSString*)serviceDomain add:(BOOL)add moreComing:(BOOL)moreComing {
+- (void) browserReceviedResult:(DNSServiceErrorType)error interfaceIndex:(uint32_t)interfaceIndex serviceName:(NSString*)serviceName serviceDomain:(NSString*)serviceDomain add:(BOOL)add moreComing:(BOOL)moreComing {
     self.lastError = error;
     if (error == kDNSServiceErr_NoError) {
-        HHService* service = [[HHService alloc] initWithName:serviceName type:self.type domain:serviceDomain includeP2P:self.includeP2P];
+        HHService* service = [[HHService alloc] initWithName:serviceName type:self.type domain:serviceDomain browsedInterfaceIndex:interfaceIndex];
+#ifdef DEBUG
+        char interfaceName[IFNAMSIZ];
+        if( if_indextoname(interfaceIndex, interfaceName) != NULL ) {
+            [service HHLogDebug:@"Service found by browser on interface index %d ('%s')", interfaceIndex, interfaceName];
+        } else {
+            [service HHLogDebug:@"Service found by browser on interface index %d", interfaceIndex];
+        }
+#endif
 
         if( add ) [self.delegate serviceBrowser:self didFindService:service moreComing:moreComing];
         else [self.delegate serviceBrowser:self didRemoveService:service moreComing:moreComing];
@@ -71,13 +87,7 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 #pragma mark - Creation and destruction
 
 - (id) initWithType:(NSString*)svcType domain:(NSString*)svcDomain {
-    return [self initWithType:svcType domain:svcDomain includeP2P:YES];
-}
-
-- (id) initWithType:(NSString*)svcType domain:(NSString*)svcDomain includeP2P:(BOOL)includeP2P {
     if( (self = [super init]) ) {
-        _includeP2P = includeP2P;
-        
         if( [svcType hasSuffix:@"."] ) svcType = [svcType substringToIndex:svcType.length-1];
         
         _type = svcType;
@@ -91,19 +101,27 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 #pragma mark - Browsing and resolving
 
 - (BOOL) beginBrowse {
-    return [self beginBrowse:kDNSServiceInterfaceIndexAny];
+    return [self beginBrowse:kDNSServiceInterfaceIndexAny includeP2P:YES];
 }
 
 - (BOOL) beginBrowseOverBluetoothOnly {
-    return [self beginBrowse:kDNSServiceInterfaceIndexP2P];
+    return [self beginBrowse:kDNSServiceInterfaceIndexP2P includeP2P:YES];
 }
 
-- (BOOL) beginBrowse:(uint32_t)interfaceIndex {
+- (BOOL) beginBrowse:(uint32_t)interfaceIndex includeP2P:(BOOL)includeP2P {
+    if( self.serviceRef != nil ) {
+        [self HHLogDebug:@"Browse operation already executing"];
+        return NO;
+    }
+    
+    self.browseInterfaceIndex = interfaceIndex;
+    self.browseIncludeP2P = includeP2P;
+    
     const char* type =  [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
 
     DNSServiceRef browseRef = NULL;
-    DNSServiceFlags flags = self.includeP2P ? kDNSServiceFlagsIncludeP2P : 0;
+    DNSServiceFlags flags = includeP2P ? kDNSServiceFlagsIncludeP2P : 0;
     DNSServiceErrorType err = DNSServiceBrowse(&browseRef, flags, interfaceIndex, type, domain,
                                                browseCallBack, (__bridge void *)([self setCurrentCallbackContextWithSelf]));
     
@@ -124,14 +142,14 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
 }
 
 - (HHService*) resolverForService:(NSString*)name {
-    return [[HHService alloc] initWithName:name type:self.type domain:self.domain includeP2P:self.includeP2P];
+    return [[HHService alloc] initWithName:name type:self.type domain:self.domain];
 }
 
 - (BOOL) resolveService:(NSString*)name delegate:(id<HHServiceDelegate>)resolveDelegate {
     if( self.resolver ) [self.resolver endResolve];
     self.resolver = [self resolverForService:name];
     self.resolver.delegate = resolveDelegate;
-    return [self.resolver beginResolve];
+    return [self.resolver beginResolve:self.browseInterfaceIndex includeP2P:self.browseIncludeP2P];
 }
 
 
