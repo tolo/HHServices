@@ -83,11 +83,11 @@
         
         // Note: use beginResolveOnBrowsedInterface instead to only resolve for the interface index returned by browsing (note that multiple HHService
         // instances can be returned for the same service while browsing)
-        //[resolvingService beginResolve];
+        [resolvingService beginResolve];
         
         // Examples of other resolving options:
         //[resolvingService beginResolveOverBluetoothOnly];
-        [resolvingService beginResolveOfHostName];
+        //[resolvingService beginResolveOfHostName];
         //[resolvingService beginResolveOnBrowsedInterface];
         //[resolvingService beginResolve:resolvingService.browsedInterfaceIndex includeP2P:YES addressLookupProtocols:kDNSServiceProtocol_IPv4];
         //[resolvingService beginResolve:kDNSServiceInterfaceIndexAny includeP2P:YES addressLookupProtocols:kDNSServiceProtocol_IPv4];
