@@ -9,6 +9,7 @@
 #import "HHService.h"
 
 #import "HHServiceDiscoveryOperation+Private.h"
+#import <dns_sd.h>
 #import <netinet/in.h>
 #import <arpa/inet.h>
 #import <net/if.h>

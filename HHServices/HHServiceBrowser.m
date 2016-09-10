@@ -9,6 +9,7 @@
 #import "HHServiceBrowser.h"
 
 #import "HHServiceDiscoveryOperation+Private.h"
+#import <dns_sd.h>
 #import <net/if.h>
 
 

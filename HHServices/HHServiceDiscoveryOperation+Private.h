@@ -6,7 +6,8 @@
 //  License: MIT - https://github.com/tolo/HHServices/blob/master/LICENSE
 //
 
-#import <dns_sd.h>
+
+typedef struct _DNSServiceRef_t *DNSServiceRef;
 
 
 NS_ASSUME_NONNULL_BEGIN

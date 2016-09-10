@@ -7,7 +7,9 @@
 //
 
 #import "HHServiceDiscoveryOperation.h"
+
 #import "HHServiceDiscoveryOperation+Private.h"
+#import <dns_sd.h>
 
 
 @implementation HHServiceDiscoveryOperationCallbackContext
