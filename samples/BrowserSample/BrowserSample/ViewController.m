@@ -115,6 +115,14 @@
         resolvingService = nil;
     }
     
+    NSLog(@"Done resolving %@", service.name);
+    if( service.resolvedHostName != nil ) {
+        NSLog(@"Resolved host %@, port %d", service.resolvedHostName, service.resolvedPortNumber);
+    }
+    for(HHAddressInfo* addressInfo in service.resolvedAddressInfo) {
+        NSLog(@"Resolved address %@", addressInfo.addressAndPortString);
+    }
+    
     NSString* message = [NSString stringWithFormat:@"Service did resolve (moreComing: %@): %@ - %@", moreComing ? @"YES" : @"NO", service.resolvedHostName, service.resolvedAddressStrings];
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Resolve result" message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alert show];

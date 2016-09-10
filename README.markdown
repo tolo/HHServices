@@ -21,6 +21,8 @@ Version 2.0 adds the ability to specify that service browsing, publishing, and r
 
 # Usage examples
 
+Below are some quick usage examples. There are also sample projects for publishing and browsing/resolving in the `samples` directory.
+
 ## Publish service
 
 ```objective-c
@@ -51,42 +53,39 @@ browser.delegate = self;
 - (void) serviceBrowser:(HHServiceBrowser*)serviceBrowser didFindService:(HHService*)service moreComing:(BOOL)moreComing {
     ...
     service.delegate = self;
-    [service beginResolve];
+    [service beginResolve]; // There are also a bunch of other methods for resolving the service - for instance, if you're
+    // only interested in the host name, you could instead use beginResolveOfHostName
+
     // Make sure you retain the service object (for instance add it to a list of services currently
     // being resolved), otherwise it will be deallocated upon return of this method.
     ...
 }
 
-- (void) serviceDidResolve:(HHService*)service {
-	...
-	NSArray* rawAddresses = service.resolvedAddresses;
-  for (NSData* addressData in rawAddresses) {
-      struct sockaddr* address = (struct sockaddr*)[addressData bytes];
+- (void) serviceDidResolve:(HHService*)service moreComing:(BOOL)moreComing {
+    ...
+    // Create yourself a nice little socket. For example if you're using HTTP, set up
+    // the connection using for example NSURLSession or AFNetworking. Or if you
+    // want to use a custom TCP protocol, have a look GCDAsyncSocket for instance.
 
-      // Create yourself a nice little socket. For example if you're using HTTP, set up
-      // the connection using for example ASIHTTPRequest or AFNetworking. Or if you
-      // want to use a custom TCP protocol, have a look GCDAsyncSocket or roll your own
-      // with something this:
-      CFSocketSignature signature;
-      signature.protocolFamily = PF_INET;
-      signature.socketType = SOCK_STREAM;
-      signature.protocol = IPPROTO_TCP;
-      signature.address = CFDataCreate(kCFAllocatorDefault, (const UInt8*)address, address->sa_len);
-      CFReadStreamRef readStream;
-      CFWriteStreamRef writeStream;
-      CFStreamCreatePairWithPeerSocketSignature(kCFAllocatorDefault, &signature, &readStream, &writeStream);
+    // It's usually a good idea to attempt to connect using the host name of the service...
+    if( service.resolvedHostName != nil ) {
+        NSLog(@"Attempting to connect to %@:%d", service.resolvedHostName, service.resolvedPortNumber);
+        [self myNiftyMethodToCreateSocketForHost:service.resolvedHostName port:service.resolvedPortNumber];
+    }
+    else {
+        // ...but you can of course also connect using the resolved IPv4/IPv6 address
+        for(HHAddressInfo* addressInfo in service.resolvedAddressInfo) {
+            struct sockaddr* address = addressInfo.address
+            if ( address->sa_family == AF_INET6 ) {
+                NSLog(@"Attempting to connect to IPv6 address %@", addressInfo.addressAndPortString);
+            } else {
+                NSLog(@"Attempting to connect to IPv4 address %@", addressInfo.addressAndPortString);
+            }
 
-      NSInputStream *inputStream = (NSInputStream *)readStream;
-      NSOutputStream *outputStream = (NSOutputStream *)writeStream;
-      [inputStream setDelegate:self];
-      [outputStream setDelegate:self];
-      [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-      [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-      [inputStream open];
-      [outputStream open];
-        ...
-  }
-	...
+            BOOL connected = [self myNiftyMethodToCreateSocketForAddress:address];
+            if( connected ) break;
+        }
+    }
 }
 ```
 
