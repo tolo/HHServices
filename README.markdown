@@ -94,3 +94,6 @@ browser.delegate = self;
 
 * [PlayMyQ - Music Player • Remote Control • Jukebox](https://itunes.apple.com/app/playmyq-hd-music-player-remote/id432506056?mt=8)
 * [Bluepeer - Framework providing MultipeerConnectivity-like functionality, but without wifi performance issues](https://github.com/xaphod/Bluepeer)
+* [WiFi Booth for Canon, Nikon, Sony, and Eye-Fi](http://wifibooth.com)
+* [BluePrint for sharing printing over Bluetooth](https://wifibooth.com/blueprint/)
+
