@@ -315,19 +315,21 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 - (void) getNextAddressInfo {
     ResolveResult* result = self.currentResolveResult;
     if( result ) {
-        DNSServiceRef getAddressInfoRef = NULL;
-        
-        const char* hosttarget = [result.hostName cStringUsingEncoding:NSUTF8StringEncoding];
-        DNSServiceErrorType err = DNSServiceGetAddrInfo(&getAddressInfoRef, 0, result.interfaceIndex, self.addressLookupProtocols,
-                                                        hosttarget, getAddrInfoCallback, (__bridge void *)([self setCurrentCallbackContextWithSelf]));
-        
-        if( err == kDNSServiceErr_NoError ) {
-            [self HHLogDebug:@"Beginning address lookup on interface index %d (%@)", result.interfaceIndex, result.interfaceName];
-            [super setServiceRef:getAddressInfoRef];
-        } else {
-            [self HHLogDebug:@"Error doing address lookup"];
-            [self dnsServiceError:self.lastError];
-        }
+        dispatch_async(self.sdDispatchQueue, ^{
+            DNSServiceRef getAddressInfoRef = NULL;
+            
+            const char* hosttarget = [result.hostName cStringUsingEncoding:NSUTF8StringEncoding];
+            DNSServiceErrorType err = DNSServiceGetAddrInfo(&getAddressInfoRef, 0, result.interfaceIndex, self.addressLookupProtocols,
+                                                            hosttarget, getAddrInfoCallback, (__bridge void *)([self setCurrentCallbackContextWithSelf]));
+            
+            if( err == kDNSServiceErr_NoError ) {
+                [self HHLogDebug:@"Beginning address lookup on interface index %d (%@)", result.interfaceIndex, result.interfaceName];
+                [super setServiceRef:getAddressInfoRef];
+            } else {
+                [self HHLogDebug:@"Error doing address lookup"];
+                [self dnsServiceError:self.lastError];
+            }
+        });
     }
 }
 

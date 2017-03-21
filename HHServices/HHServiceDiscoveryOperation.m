@@ -59,10 +59,7 @@
         dispatch_set_finalizer_f(self.sdDispatchQueue, sdDispatchQueueFinalizer);
     }
     
-    if ( _serviceRef != NULL ) {
-        DNSServiceRefDeallocate(_serviceRef);
-        _serviceRef = NULL;
-    }
+    [self killMyRef];
 }
 
 void sdDispatchQueueFinalizer(void* contextWrapper) {
@@ -95,9 +92,16 @@ void sdDispatchQueueFinalizer(void* contextWrapper) {
 - (void) resetServiceRef {
     self.currentCallbackContext.operation = nil;
     
+    [self killMyRef];
+}
+
+- (void)killMyRef {
     if ( _serviceRef != NULL ) {
-        DNSServiceRefDeallocate(_serviceRef);
+        DNSServiceRef refToKill = _serviceRef;
         _serviceRef = NULL;
+        dispatch_async([self effectiveMainDispatchQueue], ^{
+            DNSServiceRefDeallocate(refToKill);
+        });
     }
 }
 
