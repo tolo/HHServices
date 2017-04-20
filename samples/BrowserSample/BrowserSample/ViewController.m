@@ -66,6 +66,7 @@
     self.view = rootView;
     
     [browser beginBrowse];
+    [self performSelector:@selector(browseAgain) withObject:nil afterDelay:10.0];
     
     // Examples of other browsing options:
     //[browser beginBrowseOverBluetoothOnly];
@@ -103,6 +104,8 @@
     
     [browser endBrowse];
     [browser beginBrowse];
+    
+    [self performSelector:@selector(browseAgain) withObject:nil afterDelay:10.0];
 }
 
 
