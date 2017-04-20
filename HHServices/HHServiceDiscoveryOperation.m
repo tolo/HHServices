@@ -12,6 +12,22 @@
 #import <dns_sd.h>
 
 
+
+static void destroyServiceRef(DNSServiceRef refToDestroy, dispatch_queue_t sdDispatchQueue) {
+    if ( refToDestroy != NULL ) {
+        dispatch_async(sdDispatchQueue, ^{
+//#ifdef DEBUG
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                NSLog(@"[DEBUG] HHServiceDiscoveryOperation - Deallocating service ref");
+//            });
+//#endif
+            DNSServiceRefDeallocate(refToDestroy);
+        });
+    }
+}
+
+
+
 @implementation HHServiceDiscoveryOperationCallbackContext
 
 - (id) initWithServiceDiscoveryOperation:(HHServiceDiscoveryOperation*)operation {
@@ -50,6 +66,10 @@
 }
 
 - (void) dealloc {
+    // Deallocating serviceRef on sdDispatchQueue, to make sure it's not being used when deallocated
+    destroyServiceRef(_serviceRef, self.sdDispatchQueue);
+    _serviceRef = NULL;
+    
     if( self.currentCallbackContext ) {
         self.currentCallbackContext.operation = nil;
         
@@ -58,14 +78,14 @@
         dispatch_set_context(self.sdDispatchQueue, context);
         dispatch_set_finalizer_f(self.sdDispatchQueue, sdDispatchQueueFinalizer);
     }
-    
-    if ( _serviceRef != NULL ) {
-        DNSServiceRefDeallocate(_serviceRef);
-        _serviceRef = NULL;
-    }
 }
 
 void sdDispatchQueueFinalizer(void* contextWrapper) {
+//#ifdef DEBUG
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        NSLog(@"[DEBUG] HHServiceDiscoveryOperation - Running dispatch queue finalizer");
+//    });
+//#endif
     CFBridgingRelease(contextWrapper);
 }
 
@@ -81,8 +101,10 @@ void sdDispatchQueueFinalizer(void* contextWrapper) {
 #pragma mark - HHServiceDiscoveryOperation
 
 - (BOOL) setServiceRef:(DNSServiceRef)serviceRef {
-    if( _serviceRef ) DNSServiceRefDeallocate(_serviceRef);
+    // Deallocating previous serviceRef on sdDispatchQueue, to make sure it's not being used when deallocated
+    destroyServiceRef(_serviceRef, self.sdDispatchQueue);
     _serviceRef = serviceRef;
+    
     DNSServiceErrorType err = DNSServiceSetDispatchQueue(_serviceRef, self.sdDispatchQueue);
     if( err != kDNSServiceErr_NoError ) {
         [self dnsServiceError:err];
@@ -95,10 +117,9 @@ void sdDispatchQueueFinalizer(void* contextWrapper) {
 - (void) resetServiceRef {
     self.currentCallbackContext.operation = nil;
     
-    if ( _serviceRef != NULL ) {
-        DNSServiceRefDeallocate(_serviceRef);
-        _serviceRef = NULL;
-    }
+    // Deallocating serviceRef on sdDispatchQueue, to make sure it's not being used when deallocated
+    destroyServiceRef(_serviceRef, self.sdDispatchQueue);
+    _serviceRef = NULL;
 }
 
 - (BOOL) hasFailed {
