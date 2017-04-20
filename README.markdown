@@ -53,8 +53,8 @@ browser.delegate = self;
 - (void) serviceBrowser:(HHServiceBrowser*)serviceBrowser didFindService:(HHService*)service moreComing:(BOOL)moreComing {
     ...
     service.delegate = self;
-    [service beginResolve]; // There are also a bunch of other methods for resolving the service - for instance, if you're
-    // only interested in the host name, you could instead use beginResolveOfHostName
+    [service beginResolve]; // There are also a bunch of other methods for resolving the service - 
+    // for instance, if you're only interested in the host name, you could instead use beginResolveOfHostName
 
     // Make sure you retain the service object (for instance add it to a list of services currently
     // being resolved), otherwise it will be deallocated upon return of this method.
@@ -66,6 +66,12 @@ browser.delegate = self;
     // Create yourself a nice little socket. For example if you're using HTTP, set up
     // the connection using for example NSURLSession or AFNetworking. Or if you
     // want to use a custom TCP protocol, have a look GCDAsyncSocket for instance.
+
+    // It's always good to do a bit of clean-up when you're done resolving:
+    if( !moreComing ) {
+        service.delegate = nil;
+        [service endResolve];
+    }
 
     // It's usually a good idea to attempt to connect using the host name of the service...
     if( service.resolvedHostName != nil ) {
