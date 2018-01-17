@@ -16,11 +16,6 @@
 static void destroyServiceRef(DNSServiceRef refToDestroy, dispatch_queue_t sdDispatchQueue) {
     if ( refToDestroy != NULL ) {
         dispatch_async(sdDispatchQueue, ^{
-//#ifdef DEBUG
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                NSLog(@"[DEBUG] HHServiceDiscoveryOperation - Deallocating service ref");
-//            });
-//#endif
             DNSServiceRefDeallocate(refToDestroy);
         });
     }
@@ -81,11 +76,6 @@ static void destroyServiceRef(DNSServiceRef refToDestroy, dispatch_queue_t sdDis
 }
 
 void sdDispatchQueueFinalizer(void* contextWrapper) {
-//#ifdef DEBUG
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        NSLog(@"[DEBUG] HHServiceDiscoveryOperation - Running dispatch queue finalizer");
-//    });
-//#endif
     CFBridgingRelease(contextWrapper);
 }
 
