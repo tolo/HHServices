@@ -1,6 +1,6 @@
 # HHServices (also known as Hejsan-Hoppsan-Services)
 
-***Updates related to P2P Bluetooth, use on later iOS-version etc - see notes under 'Changes in 2.0' below!***
+***Updates related to P2P Bluetooth, use on later iOS-versions etc - see notes under 'Changes in 2.0' below!***
 
 This little project came about when we wanted to upgrade two of our apps, PlayMeNext & PlayMyQ, to use some nifty new iOS5 features, just to be rudely awakened by the fact that bluetooth networking via NSNetService was no longer possible. So what to do? Well, the only option seemed to be to go low-level and dive right down into the DNSService* (dns-sd) APIs. This is the result. And to spare others from having to take this low-level road, I decided to share it with those having the same problem/need.
 
