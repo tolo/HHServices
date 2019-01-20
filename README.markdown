@@ -1,5 +1,7 @@
 # HHServices (also known as Hejsan-Hoppsan-Services)
 
+***Updates related to P2P Bluetooth, use on later iOS-version etc - see notes under 'Changes in 2.0' below!***
+
 This little project came about when we wanted to upgrade two of our apps, PlayMeNext & PlayMyQ, to use some nifty new iOS5 features, just to be rudely awakened by the fact that bluetooth networking via NSNetService was no longer possible. So what to do? Well, the only option seemed to be to go low-level and dive right down into the DNSService* (dns-sd) APIs. This is the result. And to spare others from having to take this low-level road, I decided to share it with those having the same problem/need.
 
 This framework may not be perfect and it doesn't do everything that NSNetService does, but it handles the most important stuff and hopefully it can be of some use to you too. Enjoy.
@@ -13,11 +15,14 @@ This framework may not be perfect and it doesn't do everything that NSNetService
 * Added ```moreComing``` parameter to ```serviceDidResolve``` method in ```HHServiceDelegate```
 * Added nullability support for better Swift interoperability
 * Added Cocoapods support
-* Added support for restricting service discovery and publishing to Bluetooth only (thanks @xaphod), as well as to a specific interface index
+* Added support for restricting service discovery and publishing to Bluetooth only (thanks [@xaphod](https://github.com/xaphod)), as well as to a specific interface index
 
-### More details about restricting service discovery and publishing to Bluetooth only (description provided by @xaphod):
+### Note: More details about restricting service discovery and publishing to Bluetooth only (description provided by [@xaphod](https://github.com/xaphod)):
 Version 2.0 adds the ability to specify that service browsing, publishing, and resolution should be done over Bluetooth only. This is as per Apple's Technical Q&A 1753: https://developer.apple.com/library/ios/qa/qa1753/_index.html. Note that this doesn't stop peers from discovering non-Bluetooth IP addresses of your device(s), but it DOES stop the wifi radio from being placed into adhoc mode multiple times a second (the cause of wifi throughput / performance degradation when using Apple's MultipeerConnectivity framework). NSNetService and Multipeer both have this problem because you cannot limit them to Bluetooth (or wifi) only, and (as of iOS 9.3) calling stopAdvertise() only takes effect after 30 seconds or so, meaning you cannot micro-manage stop/start advertising.
 
+### Note: Important info on iOS 11 and above (reported by [@bigfish24](https://github.com/bigfish24))
+Starting in iOS 11, ```NSNetService``` does not support P2P Bluetooth anymore. If this kind of connectivity is required in your app, ```HHServices``` might be a good alternative, either as a replacement for ```NSNetService``` or used in combination. 
+Read more about this in [issue 22](https://github.com/tolo/HHServices/issues/22).
 
 # Usage examples
 
