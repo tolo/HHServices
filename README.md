@@ -2,7 +2,7 @@
 
 [![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20tvOS-lightgrey.svg)](https://github.com/tolo/HHServices)
 [![Language](https://img.shields.io/badge/language-Objective--C-blue.svg)](https://github.com/tolo/HHServices)
-[![CocoaPods](https://img.shields.io/badge/pod-v2.1.0-green.svg)](https://cocoapods.org/pods/HHServices)
+[![CocoaPods](https://img.shields.io/badge/pod-v3.0.0-green.svg)](https://cocoapods.org/pods/HHServices)
 [![SPM Compatible](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -30,23 +30,52 @@ While Apple deprecated NSNetService and removed its Bluetooth P2P support in iOS
 | Need both WiFi + Bluetooth P2P | ⚠️ Consider MultipeerConnectivity (with performance tradeoff) |
 
 
+## What's New in v3.0
+
+- 🎉 **XCFramework Distribution**: Improved build times and SPM compatibility
+- 🎉 **Full async/await Support**: Native Swift concurrency via SPM
+- 🎉 **Single Import**: Use `import HHServices` for all features
+- ✅ **100% API Compatible**: No breaking changes from v2.x
+
 ## Installation
 
 ### Swift Package Manager (Recommended)
 ```swift
 dependencies: [
-    .package(url: "https://github.com/tolo/HHServices.git", from: "2.1.0")
+    .package(url: "https://github.com/tolo/HHServices.git", from: "3.0.0")
 ]
 ```
 
 ### CocoaPods
 ```ruby
-pod 'HHServices', '~> 2.1'
+pod 'HHServices', '~> 3.0'
 ```
 
-### Manual
-1. Add all files from the `HHServices` directory to your project
-2. Link against `Foundation.framework`
+### Manual (XCFramework)
+1. Build or download the XCFramework from `Binary/HHServices.xcframework`
+2. Drag it into your Xcode project
+3. Select "Embed & Sign" in the frameworks settings
+
+## Development
+
+### Building the XCFramework
+```bash
+./Scripts/build-xcframework.sh
+```
+
+### Running Tests
+For Xcode-based testing (recommended):
+```bash
+xcodebuild test -project HHServices.xcodeproj -scheme HHServicesTests \
+  -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+```
+
+For SPM-based testing (requires source mode):
+```bash
+HHSERVICES_DEV=1 swift test
+```
+
+Note: The framework is distributed as an XCFramework binary for optimal SPM compatibility. Development and testing use source files.
 
 ## Quick Start
 

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "HHServicePublisher.h"
+#import <HHServices/HHServices.h>
 
 @interface ViewController : UIViewController<HHServicePublisherDelegate>
 

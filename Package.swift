@@ -2,48 +2,69 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import Foundation
 
-let package = Package(
-    name: "HHServices",
-    platforms: [
-        .iOS(.v13),
-        .tvOS(.v13)
-    ],
-    products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .library(
-            name: "HHServices",
-            targets: ["HHServices", "HHServicesSwift"]),
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-    ],
-    targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "HHServices",
-            dependencies: [],
-            path: "HHServices",
-            exclude: ["HHServices+Swift.swift"],
-            publicHeadersPath: ".",
-            cSettings: [
-                .headerSearchPath("."),
-                .define("_Nullable", to: "__nullable"),
-                .define("_Nonnull", to: "__nonnull")
-            ]
-        ),
-        .target(
-            name: "HHServicesSwift",
-            dependencies: ["HHServices"],
-            path: "HHServices",
-            sources: ["HHServices+Swift.swift"]
-        ),
-        .testTarget(
-            name: "HHServicesTests",
-            dependencies: ["HHServices", "HHServicesSwift"],
-            path: "Tests"
-        ),
-    ]
-)
+// Check if we're in development mode (for testing)
+let isDevelopment = ProcessInfo.processInfo.environment["HHSERVICES_DEV"] != nil
+
+let package: Package
+
+if isDevelopment {
+    // Development mode: Use source files for testing
+    package = Package(
+        name: "HHServices",
+        platforms: [
+            .iOS(.v13)
+        ],
+        products: [
+            .library(
+                name: "HHServices",
+                targets: ["HHServices"]),
+        ],
+        dependencies: [],
+        targets: [
+            .target(
+                name: "HHServices",
+                dependencies: [],
+                path: "HHServices",
+                exclude: ["HHServices+Swift.swift"],
+                sources: [
+                    "HHService.m",
+                    "HHServiceBrowser.m", 
+                    "HHServiceDiscoveryOperation.m",
+                    "HHServicePublisher.m",
+                    "HHServiceValidation.m"
+                ],
+                publicHeadersPath: ".",
+                cSettings: [
+                    .headerSearchPath(".")
+                ]
+            ),
+            .testTarget(
+                name: "HHServicesTests",
+                dependencies: ["HHServices"],
+                path: "Tests"
+            ),
+        ]
+    )
+} else {
+    // Production mode: Use XCFramework for distribution
+    package = Package(
+        name: "HHServices",
+        platforms: [
+            .iOS(.v13)
+        ],
+        products: [
+            .library(
+                name: "HHServices",
+                targets: ["HHServices"]),
+        ],
+        dependencies: [],
+        targets: [
+            .binaryTarget(
+                name: "HHServices",
+                path: "Binary/HHServices.xcframework"
+            )
+        ]
+    )
+}

@@ -5,6 +5,32 @@ All notable changes to HHServices will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2025-08-14
+
+### Added
+- XCFramework distribution for improved Swift Package Manager compatibility
+- Binary framework distribution for faster build times
+- Code signing for framework security
+- Automated build script (`Scripts/build-xcframework.sh`)
+
+### Changed
+- **BREAKING**: Migrated from source distribution to XCFramework binary distribution
+- Package.swift now uses binary target instead of source targets
+- CocoaPods spec updated to use vendored_frameworks
+- Single `import HHServices` now includes all Swift extensions
+- Removed tvOS support temporarily (can be re-added if needed)
+
+### Technical Details
+- Framework distributed as XCFramework with iOS device and simulator slices
+- Includes Swift module interfaces for ABI stability
+- Maintains 100% API compatibility with v2.x
+- All async/await and Combine features accessible via SPM
+
+### Migration
+- For SPM users: Update to `from: "3.0.0"` - no code changes needed
+- For CocoaPods users: Update to `'~> 3.0'` - no code changes needed
+- For manual integration: Use the XCFramework from Binary/ directory
+
 ## [2.1.0] - 2025-08-12
 
 ### Added

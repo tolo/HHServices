@@ -64,22 +64,50 @@ build_archive() {
 # Build for each platform
 build_archive "iOS Device" "generic/platform=iOS" "ios"
 build_archive "iOS Simulator" "generic/platform=iOS Simulator" "ios-simulator"
-build_archive "tvOS Device" "generic/platform=tvOS" "tvos"
-build_archive "tvOS Simulator" "generic/platform=tvOS Simulator" "tvos-simulator"
+
+# Skip tvOS builds for now - can be added later if needed
+# echo -e "${YELLOW}Attempting tvOS builds (optional)...${NC}"
+# set +e  # Don't exit on error for tvOS
+# build_archive "tvOS Device" "generic/platform=tvOS" "tvos"
+# TVOS_BUILD_RESULT=$?
+# build_archive "tvOS Simulator" "generic/platform=tvOS Simulator" "tvos-simulator"
+# TVOS_SIM_BUILD_RESULT=$?
+# set -e  # Re-enable exit on error
+TVOS_BUILD_RESULT=1
+TVOS_SIM_BUILD_RESULT=1
 
 # Create XCFramework
 echo -e "${YELLOW}Creating XCFramework...${NC}"
 
-xcodebuild -create-xcframework \
-    -framework "$BUILD_DIR/ios.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework" \
-    -framework "$BUILD_DIR/ios-simulator.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework" \
-    -framework "$BUILD_DIR/tvos.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework" \
-    -framework "$BUILD_DIR/tvos-simulator.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework" \
-    -output "$OUTPUT_DIR/$FRAMEWORK_NAME.xcframework"
+# Build framework args based on what succeeded
+FRAMEWORK_ARGS=""
+FRAMEWORK_ARGS="$FRAMEWORK_ARGS -framework $BUILD_DIR/ios.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework"
+FRAMEWORK_ARGS="$FRAMEWORK_ARGS -framework $BUILD_DIR/ios-simulator.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework"
+
+if [ $TVOS_BUILD_RESULT -eq 0 ] && [ -d "$BUILD_DIR/tvos.xcarchive" ]; then
+    FRAMEWORK_ARGS="$FRAMEWORK_ARGS -framework $BUILD_DIR/tvos.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework"
+    echo -e "${GREEN}✅ Including tvOS Device${NC}"
+fi
+
+if [ $TVOS_SIM_BUILD_RESULT -eq 0 ] && [ -d "$BUILD_DIR/tvos-simulator.xcarchive" ]; then
+    FRAMEWORK_ARGS="$FRAMEWORK_ARGS -framework $BUILD_DIR/tvos-simulator.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework"
+    echo -e "${GREEN}✅ Including tvOS Simulator${NC}"
+fi
+
+xcodebuild -create-xcframework $FRAMEWORK_ARGS -output "$OUTPUT_DIR/$FRAMEWORK_NAME.xcframework"
 
 if [ ! -d "$OUTPUT_DIR/$FRAMEWORK_NAME.xcframework" ]; then
     echo -e "${RED}❌ Failed to create XCFramework${NC}"
     exit 1
+fi
+
+# Sign the XCFramework
+echo -e "${YELLOW}Signing XCFramework...${NC}"
+codesign --sign - --force --deep "$OUTPUT_DIR/$FRAMEWORK_NAME.xcframework"
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✅ XCFramework signed${NC}"
+else
+    echo -e "${YELLOW}⚠️  Failed to sign XCFramework (non-critical)${NC}"
 fi
 
 # Verify XCFramework structure
