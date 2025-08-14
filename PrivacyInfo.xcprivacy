@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Privacy Tracking Enabled -->
+    <key>NSPrivacyTracking</key>
+    <false/>
+    
+    <!-- Privacy Tracking Domains (empty since we don't track) -->
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+    
+    <!-- Privacy Collection Data Types (none collected) -->
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array/>
+    
+    <!-- Privacy Accessed API Types -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array>
+        <!-- File timestamp APIs (used by DNS-SD for service discovery) -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- C617.1: Access file timestamps for files within the app's container -->
+                <string>C617.1</string>
+            </array>
+        </dict>
+        
+        <!-- System boot time APIs (may be used by DNS-SD internally) -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- 35F9.1: Access system boot time for measuring time intervals -->
+                <string>35F9.1</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -60,19 +60,26 @@
         _interfaceIndex = interfaceIndex;
         _interfaceName = interfaceName;
         
-        struct sockaddr* address = (struct sockaddr*)[addressData bytes];
-        if ( address->sa_family == AF_INET6 ) {
-            const struct sockaddr_in6* inet6Address = (struct sockaddr_in6*)address;
-            _portNumber = ntohs(inet6Address->sin6_port);
-        } else {
-            const struct sockaddr_in* inet4Address = (struct sockaddr_in*)address;
-            _portNumber = ntohs(inet4Address->sin_port);
+        // Validate buffer size before casting
+        NSUInteger dataLength = addressData.length;
+        if (dataLength >= sizeof(struct sockaddr)) {
+            struct sockaddr* address = (struct sockaddr*)[addressData bytes];
+            if ( address->sa_family == AF_INET6 && dataLength >= sizeof(struct sockaddr_in6) ) {
+                const struct sockaddr_in6* inet6Address = (struct sockaddr_in6*)address;
+                _portNumber = ntohs(inet6Address->sin6_port);
+            } else if ( address->sa_family == AF_INET && dataLength >= sizeof(struct sockaddr_in) ) {
+                const struct sockaddr_in* inet4Address = (struct sockaddr_in*)address;
+                _portNumber = ntohs(inet4Address->sin_port);
+            }
         }
     }
     return self;
 }
 
 - (struct sockaddr*) address {
+    if (self.addressData == nil || self.addressData.length < sizeof(struct sockaddr)) {
+        return NULL;
+    }
     return (struct sockaddr*)[self.addressData bytes];
 }
 
@@ -80,16 +87,39 @@
     if( self.addressData == nil ) {
         return nil;
     }
+    
+    NSUInteger dataLength = self.addressData.length;
+    if (dataLength < sizeof(struct sockaddr)) {
+        return nil;
+    }
+    
     struct sockaddr* address = self.address;
+    if (address == NULL) {
+        return nil;
+    }
     
     if ( address->sa_family == AF_INET6 ) {
+        if (dataLength < sizeof(struct sockaddr_in6)) {
+            return nil;
+        }
         const struct sockaddr_in6* inet6Address = (struct sockaddr_in6*)address;
         char straddr[INET6_ADDRSTRLEN];
-        inet_ntop(AF_INET6, &inet6Address->sin6_addr, straddr, sizeof(straddr));
+        if (inet_ntop(AF_INET6, &inet6Address->sin6_addr, straddr, sizeof(straddr)) == NULL) {
+            return nil;
+        }
         return [NSString stringWithFormat:@"[%s]:%d", straddr, self.portNumber];
-    } else {
+    } else if ( address->sa_family == AF_INET ) {
+        if (dataLength < sizeof(struct sockaddr_in)) {
+            return nil;
+        }
         const struct sockaddr_in* inet4Address = (struct sockaddr_in*)address;
-        return [NSString stringWithFormat:@"%@:%d", @(inet_ntoa(inet4Address->sin_addr)), self.portNumber];
+        char straddr[INET_ADDRSTRLEN];
+        if (inet_ntop(AF_INET, &inet4Address->sin_addr, straddr, sizeof(straddr)) == NULL) {
+            return nil;
+        }
+        return [NSString stringWithFormat:@"%s:%d", straddr, self.portNumber];
+    } else {
+        return nil;
     }
 }
 
@@ -152,14 +182,16 @@ static void getAddrInfoCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint
             }
             
             NSData* addressData = nil;
-            if( address->sa_family == AF_INET ) {
-                struct sockaddr_in* sin = (struct sockaddr_in*)address;
-                if( sin->sin_port == 0 ) sin->sin_port = serviceResolver.lastResolvedPort; // Set port if not set
-                addressData = [[NSData alloc] initWithBytes:address length:sizeof(struct sockaddr_in)];
-            } else if( address->sa_family == AF_INET6 ) {
-                struct sockaddr_in6* sin = (struct sockaddr_in6*)address;
-                if( sin->sin6_port == 0 ) sin->sin6_port = serviceResolver.lastResolvedPort; // Set port if not set
-                addressData = [[NSData alloc] initWithBytes:address length:sizeof(struct sockaddr_in6)];
+            if( address != NULL ) {
+                if( address->sa_family == AF_INET ) {
+                    struct sockaddr_in* sin = (struct sockaddr_in*)address;
+                    if( sin->sin_port == 0 ) sin->sin_port = serviceResolver.lastResolvedPort; // Set port if not set
+                    addressData = [[NSData alloc] initWithBytes:address length:sizeof(struct sockaddr_in)];
+                } else if( address->sa_family == AF_INET6 ) {
+                    struct sockaddr_in6* sin = (struct sockaddr_in6*)address;
+                    if( sin->sin6_port == 0 ) sin->sin6_port = serviceResolver.lastResolvedPort; // Set port if not set
+                    addressData = [[NSData alloc] initWithBytes:address length:sizeof(struct sockaddr_in6)];
+                }
             }
             addressInfo = [[HHAddressInfo alloc] initWithHostName:hostNameString addressData:addressData txtData:serviceResolver.currentResolveResult.txtData
                                                    interfaceIndex:interfaceIndex interfaceName:serviceResolver.currentResolveResult.interfaceName];
@@ -253,7 +285,15 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
                 break;
             }
         }
-        if( addressInfo ) [(NSMutableArray*)self.resolvedAddressInfo addObject:addressInfo];
+        if( addressInfo ) {
+            // Limit the number of resolved addresses to prevent resource exhaustion
+            const NSUInteger maxAddresses = 100;
+            if (self.resolvedAddressInfo.count < maxAddresses) {
+                [(NSMutableArray*)self.resolvedAddressInfo addObject:addressInfo];
+            } else {
+                [self HHLogDebug:@"Maximum number of resolved addresses reached (%lu), ignoring additional addresses", (unsigned long)maxAddresses];
+            }
+        }
         
         if ( !moreComing ) {
             [self.resolveResults removeLastObject];
@@ -318,15 +358,26 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
         DNSServiceRef getAddressInfoRef = NULL;
         
         const char* hosttarget = [result.hostName cStringUsingEncoding:NSUTF8StringEncoding];
+        if (hosttarget == NULL) {
+            [self HHLogDebug:@"Failed to convert hostname to C string"];
+            [self dnsServiceError:kDNSServiceErr_BadParam];
+            return;
+        }
         DNSServiceErrorType err = DNSServiceGetAddrInfo(&getAddressInfoRef, 0, result.interfaceIndex, self.addressLookupProtocols,
                                                         hosttarget, getAddrInfoCallback, (__bridge void *)([self setCurrentCallbackContextWithSelf]));
         
         if( err == kDNSServiceErr_NoError ) {
             [self HHLogDebug:@"Beginning address lookup on interface index %d (%@)", result.interfaceIndex, result.interfaceName];
-            [super setServiceRef:getAddressInfoRef];
+            if (![super setServiceRef:getAddressInfoRef]) {
+                // Failed to set service ref, clean up
+                DNSServiceRefDeallocate(getAddressInfoRef);
+            }
         } else {
             [self HHLogDebug:@"Error doing address lookup"];
-            [self dnsServiceError:self.lastError];
+            if (getAddressInfoRef) {
+                DNSServiceRefDeallocate(getAddressInfoRef);
+            }
+            [self dnsServiceError:err];
         }
     }
 }
@@ -386,6 +437,12 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
     const char* name = [self.name cStringUsingEncoding:NSUTF8StringEncoding];
     const char* type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    if (name == NULL || type == NULL || domain == NULL) {
+        [self HHLogDebug:@"Failed to convert service parameters to C strings"];
+        [self dnsServiceError:kDNSServiceErr_BadParam];
+        return NO;
+    }
 
     DNSServiceRef resolveRef = nil;
     DNSServiceFlags flags = includeP2P ? kDNSServiceFlagsIncludeP2P : 0;

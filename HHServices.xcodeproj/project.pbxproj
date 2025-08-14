@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90D7B8CBAB37189BBFBF2B85 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "TEMP_F53E44D8-FCE4-4134-B7E0-349F7A14B3D7" /* XCTest.framework */; };
+		BCECF732F64C474E78FAA27A /* HHServices+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */; };
+		C8B4B9031D68A741004AA48A /* HHServiceValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B4B9011D68A741004AA48A /* HHServiceValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8B4B9041D68A741004AA48A /* HHServiceValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B4B9021D68A741004AA48A /* HHServiceValidation.m */; };
+		D10849E428E5372390AF5FFB /* HHServicesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0381176F449556A2F8E305 /* HHServicesTests.m */; };
+		E294F533AB1E68FE1EB2E6EC /* HHServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B6E7761D68A6E0004AA48A /* HHServices.framework */; };
 		F6B6E78F1D68A741004AA48A /* HHService.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7821D68A741004AA48A /* HHService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F6B6E7901D68A741004AA48A /* HHService.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6E7831D68A741004AA48A /* HHService.m */; };
 		F6B6E7911D68A741004AA48A /* HHServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7841D68A741004AA48A /* HHServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,7 +25,23 @@
 		F6B6E7991D68A741004AA48A /* HHServices.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E78D1D68A741004AA48A /* HHServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F6EFF6FE2E4B80B90090F8A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F6B6E76D1D68A6E0004AA48A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F6B6E7751D68A6E0004AA48A;
+			remoteInfo = HHServices;
+		};
+/* End PBXContainerItemProxy section */
+
+
 /* Begin PBXFileReference section */
+		13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "HHServices+Swift.swift"; path = "../HHServices+Swift.swift"; sourceTree = "<group>"; };
+		8D0381176F449556A2F8E305 /* HHServicesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHServicesTests.m; sourceTree = "<group>"; };
+		B5858C59E85B9DF0F502D675 /* HHServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HHServicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8B4B9011D68A741004AA48A /* HHServiceValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceValidation.h; sourceTree = "<group>"; };
+		C8B4B9021D68A741004AA48A /* HHServiceValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServiceValidation.m; sourceTree = "<group>"; };
 		F6B6E7761D68A6E0004AA48A /* HHServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HHServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B6E7821D68A741004AA48A /* HHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHService.h; sourceTree = "<group>"; };
 		F6B6E7831D68A741004AA48A /* HHService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHService.m; sourceTree = "<group>"; };
@@ -34,10 +56,20 @@
 		F6B6E78E1D68A741004AA48A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6B6E79B1D68A8C1004AA48A /* HHServices-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HHServices-Prefix.pch"; sourceTree = "<group>"; };
 		F6CDB58E1D71DA67000E48CF /* HHServices.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HHServices.podspec; sourceTree = "<group>"; };
-		F6CDB58F1D71DA67000E48CF /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = "<group>"; };
+		F6CDB58F1D71DA67000E48CF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		"TEMP_F53E44D8-FCE4-4134-B7E0-349F7A14B3D7" /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		00A4285748B0A70EE4DDDB96 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90D7B8CBAB37189BBFBF2B85 /* XCTest.framework in Frameworks */,
+				E294F533AB1E68FE1EB2E6EC /* HHServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6B6E7721D68A6E0004AA48A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -48,14 +80,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78EFBDE1767473A6F3C3B335 /* HHServicesTests */ = {
+			isa = PBXGroup;
+			children = (
+				8D0381176F449556A2F8E305 /* HHServicesTests.m */,
+			);
+			name = HHServicesTests;
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		F6B6E76C1D68A6E0004AA48A = {
 			isa = PBXGroup;
 			children = (
 				F6CDB58E1D71DA67000E48CF /* HHServices.podspec */,
-				F6CDB58F1D71DA67000E48CF /* README.markdown */,
+				F6CDB58F1D71DA67000E48CF /* README.md */,
 				F6B6E7811D68A741004AA48A /* HHServices */,
 				F6B6E78C1D68A741004AA48A /* Supporting Files */,
 				F6B6E7771D68A6E0004AA48A /* Products */,
+				78EFBDE1767473A6F3C3B335 /* HHServicesTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				F6B6E7761D68A6E0004AA48A /* HHServices.framework */,
+				B5858C59E85B9DF0F502D675 /* HHServicesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,6 +122,9 @@
 				F6B6E7881D68A741004AA48A /* HHServiceDiscoveryOperation.m */,
 				F6B6E7891D68A741004AA48A /* HHServicePublisher.h */,
 				F6B6E78A1D68A741004AA48A /* HHServicePublisher.m */,
+				C8B4B9011D68A741004AA48A /* HHServiceValidation.h */,
+				C8B4B9021D68A741004AA48A /* HHServiceValidation.m */,
+				13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */,
 			);
 			path = HHServices;
 			sourceTree = "<group>";
@@ -106,12 +152,33 @@
 				F6B6E78F1D68A741004AA48A /* HHService.h in Headers */,
 				F6B6E7911D68A741004AA48A /* HHServiceBrowser.h in Headers */,
 				F6B6E7931D68A741004AA48A /* HHServiceDiscoveryOperation+Private.h in Headers */,
+				C8B4B9031D68A741004AA48A /* HHServiceValidation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		35858C59E85B9DF0F502D674 /* HHServicesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A5A7976D20EF22491D152E4 /* Build configuration list for PBXNativeTarget "HHServicesTests" */;
+			buildPhases = (
+				CF27F60A304A6D79C42B1093 /* Sources */,
+				00A4285748B0A70EE4DDDB96 /* Frameworks */,
+				15E3CB9D1863519C527E1581 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				77F1F45BB6D540C426F8595A /* PBXTargetDependency */,
+			);
+			name = HHServicesTests;
+			packageProductDependencies = (
+			);
+			productName = HHServicesTests;
+			productReference = B5858C59E85B9DF0F502D675 /* HHServicesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F6B6E7751D68A6E0004AA48A /* HHServices */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F6B6E77E1D68A6E0004AA48A /* Build configuration list for PBXNativeTarget "HHServices" */;
@@ -149,6 +216,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = F6B6E76C1D68A6E0004AA48A;
@@ -157,11 +225,19 @@
 			projectRoot = "";
 			targets = (
 				F6B6E7751D68A6E0004AA48A /* HHServices */,
+				35858C59E85B9DF0F502D674 /* HHServicesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		15E3CB9D1863519C527E1581 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6B6E7741D68A6E0004AA48A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -172,6 +248,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CF27F60A304A6D79C42B1093 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D10849E428E5372390AF5FFB /* HHServicesTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F6B6E7711D68A6E0004AA48A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -180,12 +264,50 @@
 				F6B6E7951D68A741004AA48A /* HHServiceDiscoveryOperation.m in Sources */,
 				F6B6E7971D68A741004AA48A /* HHServicePublisher.m in Sources */,
 				F6B6E7901D68A741004AA48A /* HHService.m in Sources */,
+				C8B4B9041D68A741004AA48A /* HHServiceValidation.m in Sources */,
+				BCECF732F64C474E78FAA27A /* HHServices+Swift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		77F1F45BB6D540C426F8595A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F6B6E7751D68A6E0004AA48A /* HHServices */;
+			targetProxy = F6EFF6FE2E4B80B90090F8A6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		D440AAE4B2CD5A66950E2C31 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_IDENTIFIER = com.tolo.HHServicesTests;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(BUILT_PRODUCTS_DIR)";
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tolo.HHServicesTests;
+				PRODUCT_NAME = HHServicesTests;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "";
+			};
+			name = Release;
+		};
+		E59F8613A16BB3A2A9413BE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_IDENTIFIER = com.tolo.HHServicesTests;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited) $(BUILT_PRODUCTS_DIR)";
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tolo.HHServicesTests;
+				PRODUCT_NAME = HHServicesTests;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "";
+			};
+			name = Debug;
+		};
 		F6B6E77C1D68A6E0004AA48A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -224,7 +346,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -266,7 +388,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -286,12 +408,13 @@
 				GCC_PREFIX_HEADER = "Supporting Files/HHServices-Prefix.pch";
 				INFOPLIST_FILE = "Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.leafnode.HHServices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
@@ -306,12 +429,13 @@
 				GCC_PREFIX_HEADER = "Supporting Files/HHServices-Prefix.pch";
 				INFOPLIST_FILE = "Supporting Files/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.leafnode.HHServices;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
@@ -319,6 +443,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4A5A7976D20EF22491D152E4 /* Build configuration list for PBXNativeTarget "HHServicesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E59F8613A16BB3A2A9413BE7 /* Debug */,
+				D440AAE4B2CD5A66950E2C31 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F6B6E7701D68A6E0004AA48A /* Build configuration list for PBXProject "HHServices" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

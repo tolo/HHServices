@@ -14,3 +14,6 @@ Samples/*/*.xcworkspace
 .idea
 notes
 .DS_Store
+.build
+.claude
+ai_docs/utils

@@ -102,6 +102,11 @@ static void registerServiceCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, 
     const char* name = [self.name cStringUsingEncoding:NSUTF8StringEncoding];
     const char* type = [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    if (name == NULL || type == NULL || domain == NULL) {
+        [self dnsServiceError:kDNSServiceErr_BadParam];
+        return NO;
+    }
     const void* txtData = [self.txtData bytes];
     uint16_t txtLen = (uint16_t)self.txtData.length;
 

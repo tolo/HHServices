@@ -120,6 +120,11 @@ static void browseCallBack(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t 
     
     const char* type =  [self.type cStringUsingEncoding:NSUTF8StringEncoding];
     const char* domain = [self.domain cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    if (type == NULL || domain == NULL) {
+        [self dnsServiceError:kDNSServiceErr_BadParam];
+        return NO;
+    }
 
     DNSServiceRef browseRef = NULL;
     DNSServiceFlags flags = includeP2P ? kDNSServiceFlagsIncludeP2P : 0;
