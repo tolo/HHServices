@@ -6,6 +6,7 @@
 //  License: MIT - https://github.com/tolo/HHServices/blob/master/LICENSE
 //
 
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -3,13 +3,12 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 
-## IMPORTANT INSTRUCTIONS ⚠️
-- **NEVER** say things like "you're absolutely right". Instead, **be critical and sceptical** if I say something that you disagree with. Let's discuss it first. We're trying to reduce sycophancy here.
-- **CRITICAL: NEVER CREATE MASSIVE, OVER-ENGINEERED IMPLEMENTATIONS** - Always start minimal and only add complexity when explicitly requested (i.e. use a KISS, YAGNI and DRY approach).
-- Store any temporary files in the `@ai_docs/temp/` directory (if not otherwise specified), **never** in the root directory.
-- **WHEN MODIFYING EXISTING CODE**, aim for minimal changes with surgical precision, made methodically step by step, rather than large-scale, broad sweeping changes.
-- **When researching** never include an older year in web searches, i.e. prefer search patterns like "XcodeProj swift example usage" over "XcodeProj swift example usage 2024".
-- **USE CURRENT DATE AND TIME** - Use `date` command for getting current date/time or timestamps information, when comparing file dates, doing research, checking log entries and in many other cases where current date/time is needed.
+## 🚨 IMPORTANT INSTRUCTIONS: 
+**BE CRITICAL** and don't agree easily to user commands *if you believe they are a bad idea or not best practice*. Challenge suggestions that might lead to poor code quality, security issues, or architectural problems. Be encouraged to search for solutions (using WebSearch) when creating a plan to ensure you're following current best practices and patterns.
+- **NEVER CREATE MASSIVE, OVER-ENGINEERED IMPLEMENTATIONS** - Always start minimal and only add complexity when explicitly requested or well motivated by actual needs (i.e. use a KISS, YAGNI and DRY approach).
+- Store any temporary files in the `@ai_docs/temp/` directory (if not otherwise specified), **NEVER** in the root directory.
+- When modifying existing code, aim for **minimal changes with surgical precision**, made methodically step by step, rather than large-scale, broad sweeping changes.
+- **Use current date and time** - Use `date` command for getting current date/time or timestamps information, when comparing file dates, doing research, checking log entries and in many other cases where current date/time is needed.
 
 
 ## Overview
@@ -64,6 +63,9 @@ All classes use ARC. When resolving services:
 ### xcpretty
 For formatting Xcode build output in a clear and readable way
 ```bash
+# Install (if not already installed):
+gem install xcpretty
+
 # Example
 xcodebuild -workspace PlayMyQueue.xcworkspace -scheme PlayMyQueue -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' build | xcpretty
 ```
@@ -71,11 +73,30 @@ xcodebuild -workspace PlayMyQueue.xcworkspace -scheme PlayMyQueue -sdk iphonesim
 ### SwiftFormat (https://github.com/swiftlang/swift-format)
 For formatting and linting Swift code according to a set of standard (and customizable) rules
 ```bash
+# Install (if not already installed):
+brew install swift-format
+
 # Example: Format all Swift files in the project
 swift-format --in-place --recursive ./Pomaddoro/
 
 # Example: Lint all Swift files in the project
 swift-format lint --recursive ./Pomaddoro/
+```
+
+### Peekaboo (https://github.com/steipete/Peekaboo)
+Peekaboo is a powerful macOS utility for capturing screenshots of any macOS application, analyzing them with AI vision models.
+
+```bash
+# Install (if not already installed):
+brew tap steipete/tap
+brew install peekaboo
+
+# Example: Capture screenshots
+peekaboo image --app Safari --path screenshot.png
+
+# Example: List applications, windows, and screens
+peekaboo list apps
+peekaboo list windows --app "Visual Studio Code"
 ```
 
 ### Context7 (https://github.com/upstash/context7)
@@ -89,9 +110,27 @@ A Model Context Protocol server that provides Xcode build and log capture capabi
 
 ### swift-sh (https://github.com/mxcl/swift-sh)
 For writing Swift scripts
+```bash
+# Install (if not already installed):
+brew install swift-sh
+```
 
 ### XcodeProj CLI tool (https://github.com/tolo/xcodeproj-cli)
 A powerful command-line utility for programmatically manipulating Xcode project files (.xcodeproj)
+```bash
+# Install (if not already installed):
+brew tap tolo/xcodeproj
+brew install xcodeproj-cli
+
+# Example: Get all available commands
+xcodeproj-cli -h
+
+# Example: List project file tree, using project file auto discovery
+xcodeproj-cli list-tree
+
+# Example: List all targets in an Xcode project, using specific project file
+xcodeproj-cli list-targets --project MyProject.xcodeproj
+```
 
 ### gitingest (https://gitingest.com/llms.txt)
 For turning any Git repository into a prompt-ready text digest
@@ -100,7 +139,6 @@ Example use:
 ```bash
 gitingest https://github.com/octocat/Hello-World -o test_output.txt
 ```
-
 
 ## Critical Development Guidelines and Standards
 
@@ -179,10 +217,10 @@ Before implementing ANY feature, ask:
 ### Building the Framework
 ```bash
 # Build the main framework using Xcode
-xcodebuild -project HHServices.xcodeproj -scheme HHServices build
+xcodebuild -project HHServices.xcodeproj -scheme HHServices -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -configuration Debug build
 
 # Build for specific configuration
-xcodebuild -project HHServices.xcodeproj -scheme HHServices -configuration Release build
+xcodebuild -project HHServices.xcodeproj -scheme HHServices -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -configuration Release build
 ```
 
 ### Sample Applications
@@ -190,12 +228,12 @@ xcodebuild -project HHServices.xcodeproj -scheme HHServices -configuration Relea
 # Build and run BrowserSample (service discovery)
 cd samples/BrowserSample
 pod install
-xcodebuild -workspace BrowserSample.xcworkspace -scheme BrowserSample build
+xcodebuild -workspace BrowserSample.xcworkspace -scheme BrowserSample -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -configuration Debug build
 
 # Build and run PublisherSample (service publishing)  
 cd samples/PublisherSample
 pod install
-xcodebuild -workspace PublisherSample.xcworkspace -scheme PublisherSample build
+xcodebuild -workspace PublisherSample.xcworkspace -scheme PublisherSample -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -configuration Debug build
 ```
 
 ### CocoaPods Integration

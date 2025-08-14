@@ -492,7 +492,7 @@ static void resolveCallback(DNSServiceRef sdRef, DNSServiceFlags flags, uint32_t
 }
 
 - (NSString*) description {
-    return [NSString stringWithFormat:@"HHService[0x%08X, %@, %@, %@, %@, %@, %d]", (unsigned int)self,
+    return [NSString stringWithFormat:@"HHService[%p, %@, %@, %@, %@, %@, %d]", self,
             self.name, self.type, self.domain, self.resolvedHostName, self.resolvedAddressStrings, (int)self.txtData.length];
 }
 

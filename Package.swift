@@ -13,7 +13,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "HHServices",
-            targets: ["HHServices"]),
+            targets: ["HHServices", "HHServicesSwift"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -26,14 +26,23 @@ let package = Package(
             name: "HHServices",
             dependencies: [],
             path: "HHServices",
+            exclude: ["HHServices+Swift.swift"],
             publicHeadersPath: ".",
             cSettings: [
                 .headerSearchPath("."),
+                .define("_Nullable", to: "__nullable"),
+                .define("_Nonnull", to: "__nonnull")
             ]
+        ),
+        .target(
+            name: "HHServicesSwift",
+            dependencies: ["HHServices"],
+            path: "HHServices",
+            sources: ["HHServices+Swift.swift"]
         ),
         .testTarget(
             name: "HHServicesTests",
-            dependencies: ["HHServices"],
+            dependencies: ["HHServices", "HHServicesSwift"],
             path: "Tests"
         ),
     ]

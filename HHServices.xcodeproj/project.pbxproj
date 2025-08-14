@@ -37,7 +37,7 @@
 
 
 /* Begin PBXFileReference section */
-		13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "HHServices+Swift.swift"; path = "../HHServices+Swift.swift"; sourceTree = "<group>"; };
+		13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HHServices+Swift.swift"; sourceTree = "<group>"; };
 		8D0381176F449556A2F8E305 /* HHServicesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHServicesTests.m; sourceTree = "<group>"; };
 		B5858C59E85B9DF0F502D675 /* HHServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HHServicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8B4B9011D68A741004AA48A /* HHServiceValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceValidation.h; sourceTree = "<group>"; };

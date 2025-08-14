@@ -11,3 +11,4 @@
 #import <HHServices/HHServiceBrowser.h>
 #import <HHServices/HHServicePublisher.h>
 #import <HHServices/HHService.h>
+#import <HHServices/HHServiceValidation.h>
