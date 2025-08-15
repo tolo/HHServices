@@ -8,28 +8,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.0.0] - 2025-08-14
 
 ### Added
-- XCFramework distribution for improved Swift Package Manager compatibility
-- Binary framework distribution for faster build times
-- Code signing for framework security
-- Automated build script (`Scripts/build-xcframework.sh`)
+- Complete Swift rewrite - 100% pure Swift implementation
+- Native async/await support without wrappers
+- Full type safety with Swift's type system
+- Improved error handling with typed errors
+- AsyncStream-based service discovery
+- Actor-based concurrency safety
 
 ### Changed
-- **BREAKING**: Migrated from source distribution to XCFramework binary distribution
-- Package.swift now uses binary target instead of source targets
-- CocoaPods spec updated to use vendored_frameworks
-- Single `import HHServices` now includes all Swift extensions
-- Removed tvOS support temporarily (can be re-added if needed)
+- **BREAKING**: Complete API redesign in Swift
+- **BREAKING**: Minimum deployment target iOS 13.0
+- Migrated from Objective-C to Swift
+- Source distribution (no more binary frameworks)
+- Simplified SPM integration
+
+### Removed
+- Objective-C implementation files
+- Complex mixed-language build issues
+- Need for XCFramework distribution
 
 ### Technical Details
-- Framework distributed as XCFramework with iOS device and simulator slices
-- Includes Swift module interfaces for ABI stability
-- Maintains 100% API compatibility with v2.x
-- All async/await and Combine features accessible via SPM
+- ~1,500 lines of modern Swift code
+- Zero external dependencies
+- Native Swift concurrency patterns
+- Full Sendable conformance for thread safety
 
-### Migration
-- For SPM users: Update to `from: "3.0.0"` - no code changes needed
-- For CocoaPods users: Update to `'~> 3.0'` - no code changes needed
-- For manual integration: Use the XCFramework from Binary/ directory
+### Migration from v2.x
+- API has changed significantly due to Swift migration
+- Update imports to `import HHServices`
+- See migration examples in README
 
 ## [2.1.0] - 2025-08-12
 

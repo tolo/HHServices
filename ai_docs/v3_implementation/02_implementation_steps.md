@@ -1,5 +1,14 @@
 # Implementation Steps - HHServices v3.0
 
+> **NOTE: ACTUAL IMPLEMENTATION DIFFERED** 
+> 
+> We implemented v3.0 as a **100% Pure Swift migration** instead of XCFramework distribution.
+> This turned out to be a superior solution that eliminated all SPM mixed-language issues.
+> 
+> See README.md for what was actually delivered.
+> 
+> The steps below were the original XCFramework plan, kept for reference.
+
 ## Phase 1: Project Configuration
 
 ### Step 1.1: Update Xcode Project Settings

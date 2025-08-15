@@ -32,10 +32,11 @@ While Apple deprecated NSNetService and removed its Bluetooth P2P support in iOS
 
 ## What's New in v3.0
 
-- 🎉 **XCFramework Distribution**: Improved build times and SPM compatibility
-- 🎉 **Full async/await Support**: Native Swift concurrency via SPM
-- 🎉 **Single Import**: Use `import HHServices` for all features
-- ✅ **100% API Compatible**: No breaking changes from v2.x
+- 🎉 **100% Pure Swift**: Complete migration from Objective-C
+- 🎉 **Native async/await**: Built-in Swift concurrency support
+- 🎉 **Type Safety**: Full Swift type system benefits
+- 🎉 **Source Distribution**: No more binary frameworks
+- ✅ **Simplified SPM**: Perfect Swift Package Manager integration
 
 ## Installation
 
@@ -51,31 +52,21 @@ dependencies: [
 pod 'HHServices', '~> 3.0'
 ```
 
-### Manual (XCFramework)
-1. Build or download the XCFramework from `Binary/HHServices.xcframework`
-2. Drag it into your Xcode project
-3. Select "Embed & Sign" in the frameworks settings
+### Manual
+1. Add the `Sources/HHServices` directory to your Xcode project
+2. Ensure minimum iOS 13.0 deployment target
 
 ## Development
 
-### Building the XCFramework
-```bash
-./Scripts/build-xcframework.sh
-```
-
 ### Running Tests
-For Xcode-based testing (recommended):
 ```bash
-xcodebuild test -project HHServices.xcodeproj -scheme HHServicesTests \
-  -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+swift test
 ```
 
-For SPM-based testing (requires source mode):
+### Building
 ```bash
-HHSERVICES_DEV=1 swift test
+swift build
 ```
-
-Note: The framework is distributed as an XCFramework binary for optimal SPM compatibility. Development and testing use source files.
 
 ## Quick Start
 

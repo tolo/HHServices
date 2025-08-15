@@ -1,20 +1,26 @@
 # Migration Guide - HHServices v3.0
 
+> **NOTE: UPDATED FOR PURE SWIFT IMPLEMENTATION**
+> 
+> This guide has been updated to reflect the actual v3.0 implementation
+> as a pure Swift migration rather than XCFramework distribution.
+
 ## Overview
 
-HHServices v3.0 introduces XCFramework distribution to provide a unified API experience across all package managers. The great news: **there are no breaking API changes!**
+HHServices v3.0 is a complete Swift rewrite that provides modern Swift APIs with async/await and Combine support. **This is a major version with API changes from the Objective-C version.**
 
 ### What's Changed
 
 | Feature | v2.x | v3.0 |
 |---------|------|------|
-| **Distribution** | Source code | XCFramework |
-| **SPM Import** | `import HHServices` (ObjC only) | `import HHServices` (Full API) |
-| **CocoaPods Import** | `import HHServices` (Full API) | `import HHServices` (Full API) |
-| **Async/Await via SPM** | ❌ Not available | ✅ Available |
-| **Combine via SPM** | ❌ Not available | ✅ Available |
-| **Binary Size** | ~200KB source | ~2MB XCFramework |
-| **API Changes** | - | None |
+| **Language** | Objective-C | Pure Swift |
+| **Distribution** | Source code | Source code |
+| **SPM Support** | ❌ Not working | ✅ Full support |
+| **CocoaPods** | ✅ Supported | ✅ Supported |
+| **Async/Await** | ❌ Not available | ✅ Native support |
+| **Combine** | ❌ Not available | ✅ Native support |
+| **Binary Size** | ~200KB source | ~200KB source |
+| **API Style** | Objective-C patterns | Swift patterns |
 
 ## Migration by Integration Method
 
@@ -22,51 +28,40 @@ HHServices v3.0 introduces XCFramework distribution to provide a unified API exp
 
 #### Before (v2.x)
 ```swift
-// Package.swift
-dependencies: [
-    .package(url: "https://github.com/tolo/HHServices.git", .upToNextMajor(from: "2.0.0"))
-]
-
-// Your code - limited to Objective-C API
-import HHServices
-
-let browser = HHServiceBrowser(type: "_service._tcp.", domain: "local.")
-browser.delegate = self
-browser.beginBrowse()
-
-// Async/await NOT available ❌
-// Combine NOT available ❌
+// SPM was not supported in v2.x
+// Users had to use CocoaPods or manual integration
 ```
 
 #### After (v3.0)
 ```swift
-// Package.swift - just update version
+// Package.swift - now fully supported!
 dependencies: [
     .package(url: "https://github.com/tolo/HHServices.git", from: "3.0.0")
 ]
 
-// Your code - full API now available!
+// Your code - modern Swift API
 import HHServices
 
-let browser = HHServiceBrowser(type: "_service._tcp.", domain: "local.")
+let browser = ServiceBrowser(type: "_service._tcp.", domain: "local.")
 
-// Option 1: Traditional delegate (still works)
-browser.delegate = self
-browser.beginBrowse()
-
-// Option 2: Modern async/await (NOW AVAILABLE! ✅)
+// Modern async/await (native Swift)
 Task {
-    for try await discovery in browser.browse() {
-        print("Found: \(discovery.service.name)")
+    for await event in browser.browse() {
+        switch event {
+        case .serviceAdded(let service):
+            print("Found: \(service.name)")
+        case .serviceRemoved(let service):
+            print("Lost: \(service.name)")
+        case .serviceUpdated(let service):
+            print("Updated: \(service.name)")
+        }
     }
 }
 
-// Option 3: Combine (NOW AVAILABLE! ✅)
+// Or use Combine
 browser.browsePublisher()
-    .sink { completion in
-        // Handle completion
-    } receiveValue: { discovery in
-        print("Found: \(discovery.service.name)")
+    .sink { event in
+        // Handle discovery events
     }
     .store(in: &cancellables)
 ```
@@ -236,11 +231,11 @@ xcodebuild test  # For Xcode
 
 ## FAQ
 
-### Q: Will my existing code break?
-**A**: No! v3.0 has zero breaking changes. All existing code continues to work.
+### Q: Will my existing Objective-C code break?
+**A**: Yes, v3.0 is a complete Swift rewrite. You'll need to migrate to the new Swift API. See the migration examples above.
 
-### Q: Why is the download larger?
-**A**: XCFramework includes pre-compiled binaries for all architectures (iOS, tvOS, simulator, device). The trade-off is faster build times and consistent API.
+### Q: Why was it rewritten in Swift?
+**A**: The Swift rewrite solves SPM compatibility issues, provides modern Swift patterns, and simplifies maintenance with a single-language codebase.
 
 ### Q: Can I still access the source code?
 **A**: Yes! The source remains available on GitHub. The XCFramework is built from the same source.
@@ -249,7 +244,7 @@ xcodebuild test  # For Xcode
 **A**: Stay on v2.x. Version 3.0 requires iOS 13+ for Swift features.
 
 ### Q: Do I have to use async/await?
-**A**: No! The delegate pattern still works exactly as before. Async/await is optional.
+**A**: No! You can use async/await, Combine publishers, or traditional completion handlers. Choose what fits your project best.
 
 ## Troubleshooting
 
@@ -287,10 +282,10 @@ If you encounter issues:
 
 ## Summary
 
-**For 90% of users**: Just update the version number. Everything works the same.
+**For Objective-C users**: Migration to Swift API required, but brings modern patterns.
 
-**For SPM users**: You now get async/await and Combine! 🎉
+**For SPM users**: Full support is finally here! 🎉
 
-**For everyone**: Faster builds, consistent API, better experience.
+**For everyone**: Modern Swift patterns, async/await, Combine, better performance.
 
 Welcome to HHServices v3.0!
