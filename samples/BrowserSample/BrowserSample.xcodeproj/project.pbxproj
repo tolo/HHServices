@@ -11,9 +11,8 @@
 		2757D0C21850CD4D003ACBAF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2757D0C11850CD4D003ACBAF /* CoreGraphics.framework */; };
 		2757D0C41850CD4D003ACBAF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2757D0C31850CD4D003ACBAF /* UIKit.framework */; };
 		2757D0CA1850CD4D003ACBAF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2757D0C81850CD4D003ACBAF /* InfoPlist.strings */; };
-		2757D0CC1850CD4D003ACBAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D0CB1850CD4D003ACBAF /* main.m */; };
-		2757D0D01850CD4D003ACBAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D0CF1850CD4D003ACBAF /* AppDelegate.m */; };
-		2757D0D61850CD4D003ACBAF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D0D51850CD4D003ACBAF /* ViewController.m */; };
+		39AC570EA4F8BFB95FDD0A11 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD827CE1B6A407F5B178CC6 /* ViewController.swift */; };
+		C6307928B9E68800C993F343 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9667FC903B5CBE9C1EED75D /* AppDelegate.swift */; };
 		D863CD37839E27DB75FF92DF /* Pods_BrowserSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766AB9528187BE47F6228971 /* Pods_BrowserSample.framework */; };
 		F6B6E7581D6749E0004AA48A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E7571D6749E0004AA48A /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
@@ -25,17 +24,14 @@
 		2757D0C31850CD4D003ACBAF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2757D0C71850CD4D003ACBAF /* BrowserSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BrowserSample-Info.plist"; sourceTree = "<group>"; };
 		2757D0C91850CD4D003ACBAF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2757D0CB1850CD4D003ACBAF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2757D0CD1850CD4D003ACBAF /* BrowserSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BrowserSample-Prefix.pch"; sourceTree = "<group>"; };
-		2757D0CE1850CD4D003ACBAF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		2757D0CF1850CD4D003ACBAF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		2757D0D41850CD4D003ACBAF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2757D0D51850CD4D003ACBAF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2DD827CE1B6A407F5B178CC6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		41E87293AE43AA9742D18F0A /* Pods-BrowserSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserSample/Pods-BrowserSample.debug.xcconfig"; sourceTree = "<group>"; };
 		5FCB3857552103EA62DFE532 /* Pods-BrowserSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserSample/Pods-BrowserSample.release.xcconfig"; sourceTree = "<group>"; };
 		766AB9528187BE47F6228971 /* Pods_BrowserSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BrowserSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B6E7571D6749E0004AA48A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F6B6E75B1D674A01004AA48A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F9667FC903B5CBE9C1EED75D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,11 +83,9 @@
 		2757D0C51850CD4D003ACBAF /* BrowserSample */ = {
 			isa = PBXGroup;
 			children = (
-				2757D0CE1850CD4D003ACBAF /* AppDelegate.h */,
-				2757D0CF1850CD4D003ACBAF /* AppDelegate.m */,
-				2757D0D41850CD4D003ACBAF /* ViewController.h */,
-				2757D0D51850CD4D003ACBAF /* ViewController.m */,
 				2757D0C61850CD4D003ACBAF /* Supporting Files */,
+				2DD827CE1B6A407F5B178CC6 /* ViewController.swift */,
+				F9667FC903B5CBE9C1EED75D /* AppDelegate.swift */,
 			);
 			path = BrowserSample;
 			sourceTree = "<group>";
@@ -101,7 +95,6 @@
 			children = (
 				2757D0C71850CD4D003ACBAF /* BrowserSample-Info.plist */,
 				2757D0C81850CD4D003ACBAF /* InfoPlist.strings */,
-				2757D0CB1850CD4D003ACBAF /* main.m */,
 				2757D0CD1850CD4D003ACBAF /* BrowserSample-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -146,6 +139,8 @@
 			attributes = {
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Leafnode AB";
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = 2757D0B71850CD4D003ACBAF /* Build configuration list for PBXProject "BrowserSample" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -203,7 +198,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BrowserSample/Pods-BrowserSample-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/HHServices/HHServices.framework/HHServices",
+				"${BUILT_PRODUCTS_DIR}/HHServices/HHServices.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -221,9 +216,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2757D0D61850CD4D003ACBAF /* ViewController.m in Sources */,
-				2757D0D01850CD4D003ACBAF /* AppDelegate.m in Sources */,
-				2757D0CC1850CD4D003ACBAF /* main.m in Sources */,
+				39AC570EA4F8BFB95FDD0A11 /* ViewController.swift in Sources */,
+				C6307928B9E68800C993F343 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,12 +312,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 41E87293AE43AA9742D18F0A /* Pods-BrowserSample.debug.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "BrowserSample/BrowserSample-Prefix.pch";
 				INFOPLIST_FILE = "BrowserSample/BrowserSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "se.leafnode.HHServices.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -332,12 +327,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5FCB3857552103EA62DFE532 /* Pods-BrowserSample.release.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "BrowserSample/BrowserSample-Prefix.pch";
 				INFOPLIST_FILE = "BrowserSample/BrowserSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "se.leafnode.HHServices.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

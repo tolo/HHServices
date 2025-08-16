@@ -11,10 +11,9 @@
 		2757D1031850CD94003ACBAF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2757D1021850CD94003ACBAF /* CoreGraphics.framework */; };
 		2757D1051850CD94003ACBAF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2757D1041850CD94003ACBAF /* UIKit.framework */; };
 		2757D10B1850CD94003ACBAF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2757D1091850CD94003ACBAF /* InfoPlist.strings */; };
-		2757D10D1850CD94003ACBAF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D10C1850CD94003ACBAF /* main.m */; };
-		2757D1111850CD94003ACBAF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D1101850CD94003ACBAF /* AppDelegate.m */; };
-		2757D1171850CD94003ACBAF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2757D1161850CD94003ACBAF /* ViewController.m */; };
+		B66083CBDF88123338F365D8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C0D653726E0BF0251ECDEB /* ViewController.swift */; };
 		D2173EE2CC30A1C36A848B56 /* Pods_PublisherSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23958F1151443DD84B987D5 /* Pods_PublisherSample.framework */; };
+		F5E22468A9258F0DA9A2CC11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4033ECFFBB0D747B276EA1C /* AppDelegate.swift */; };
 		F6B6E75A1D6749F2004AA48A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F6B6E7591D6749F2004AA48A /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -25,15 +24,12 @@
 		2757D1041850CD94003ACBAF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2757D1081850CD94003ACBAF /* PublisherSample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PublisherSample-Info.plist"; sourceTree = "<group>"; };
 		2757D10A1850CD94003ACBAF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2757D10C1850CD94003ACBAF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2757D10E1850CD94003ACBAF /* PublisherSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PublisherSample-Prefix.pch"; sourceTree = "<group>"; };
-		2757D10F1850CD94003ACBAF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		2757D1101850CD94003ACBAF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		2757D1151850CD94003ACBAF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2757D1161850CD94003ACBAF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		57C0D653726E0BF0251ECDEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		67F966D56091DB14E655884E /* Pods-PublisherSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PublisherSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PublisherSample/Pods-PublisherSample.debug.xcconfig"; sourceTree = "<group>"; };
 		9F1660A7AE1ED55ED643E2DD /* Pods-PublisherSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PublisherSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-PublisherSample/Pods-PublisherSample.release.xcconfig"; sourceTree = "<group>"; };
 		B23958F1151443DD84B987D5 /* Pods_PublisherSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PublisherSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4033ECFFBB0D747B276EA1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F6B6E7591D6749F2004AA48A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		F6B6E75D1D674A15004AA48A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,11 +83,9 @@
 		2757D1061850CD94003ACBAF /* PublisherSample */ = {
 			isa = PBXGroup;
 			children = (
-				2757D10F1850CD94003ACBAF /* AppDelegate.h */,
-				2757D1101850CD94003ACBAF /* AppDelegate.m */,
-				2757D1151850CD94003ACBAF /* ViewController.h */,
-				2757D1161850CD94003ACBAF /* ViewController.m */,
 				2757D1071850CD94003ACBAF /* Supporting Files */,
+				57C0D653726E0BF0251ECDEB /* ViewController.swift */,
+				D4033ECFFBB0D747B276EA1C /* AppDelegate.swift */,
 			);
 			path = PublisherSample;
 			sourceTree = "<group>";
@@ -101,7 +95,6 @@
 			children = (
 				2757D1081850CD94003ACBAF /* PublisherSample-Info.plist */,
 				2757D1091850CD94003ACBAF /* InfoPlist.strings */,
-				2757D10C1850CD94003ACBAF /* main.m */,
 				2757D10E1850CD94003ACBAF /* PublisherSample-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -146,6 +139,8 @@
 			attributes = {
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Leafnode AB";
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = 2757D0F81850CD94003ACBAF /* Build configuration list for PBXProject "PublisherSample" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -203,7 +198,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PublisherSample/Pods-PublisherSample-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/HHServices/HHServices.framework/HHServices",
+				"${BUILT_PRODUCTS_DIR}/HHServices/HHServices.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -221,9 +216,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2757D1171850CD94003ACBAF /* ViewController.m in Sources */,
-				2757D1111850CD94003ACBAF /* AppDelegate.m in Sources */,
-				2757D10D1850CD94003ACBAF /* main.m in Sources */,
+				B66083CBDF88123338F365D8 /* ViewController.swift in Sources */,
+				F5E22468A9258F0DA9A2CC11 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,12 +312,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 67F966D56091DB14E655884E /* Pods-PublisherSample.debug.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "PublisherSample/PublisherSample-Prefix.pch";
 				INFOPLIST_FILE = "PublisherSample/PublisherSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "se.leafnode.HHServices.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -332,12 +327,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9F1660A7AE1ED55ED643E2DD /* Pods-PublisherSample.release.xcconfig */;
 			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "PublisherSample/PublisherSample-Prefix.pch";
 				INFOPLIST_FILE = "PublisherSample/PublisherSample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "se.leafnode.HHServices.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

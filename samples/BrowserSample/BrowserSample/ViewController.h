@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <HHServices/HHServices.h>
+@import HHServices;
 
 @interface ViewController : UIViewController<HHServiceBrowserDelegate, HHServiceDelegate, UITableViewDataSource, UITableViewDelegate>
 

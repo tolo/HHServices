@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import <HHServices/HHServiceBrowser.h>
-#import <HHServices/HHServicePublisher.h>
-#import <HHServices/HHService.h>
-#import <HHServices/HHServiceValidation.h>
+//! Project version number for HHServices.
+FOUNDATION_EXPORT double HHServicesVersionNumber;
+
+//! Project version string for HHServices.
+FOUNDATION_EXPORT const unsigned char HHServicesVersionString[];

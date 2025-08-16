@@ -7,22 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		032AF90EEF9C4F989CE1D457 /* TXTRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C7AADAB983BDE052F1B97A /* TXTRecord.swift */; };
+		0980B3B9BEDF17AB2BA41DD4 /* ServiceValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFDAEFD6184E2D49FF861DF /* ServiceValidation.swift */; };
+		240E569C97F2C2D93CB929D3 /* ServiceBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25CD24452C66D34547A5D43 /* ServiceBrowser.swift */; };
+		2E9F631B1A4D81C98868D57A /* HHServicesError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DE9DA727EA6E3C6AB7E78B /* HHServicesError.swift */; };
+		8D46C349AEFBF9826B481239 /* ServicePublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0672DEF09FF675258D1C600B /* ServicePublisher.swift */; };
 		90D7B8CBAB37189BBFBF2B85 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "TEMP_F53E44D8-FCE4-4134-B7E0-349F7A14B3D7" /* XCTest.framework */; };
-		BCECF732F64C474E78FAA27A /* HHServices+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */; };
+		A0B16F0530F467486C07ADF3 /* HHServicesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CA7FF2AD3CBEC341D5B6C8 /* HHServicesTests.swift */; };
 		C8B4B9031D68A741004AA48A /* HHServiceValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B4B9011D68A741004AA48A /* HHServiceValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C8B4B9041D68A741004AA48A /* HHServiceValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B4B9021D68A741004AA48A /* HHServiceValidation.m */; };
-		D10849E428E5372390AF5FFB /* HHServicesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D0381176F449556A2F8E305 /* HHServicesTests.m */; };
+		D0E79AC16F776CB03B3E82A5 /* SocketAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61E339853E91DF69A40E6A4 /* SocketAddress.swift */; };
+		D4BCAF712D190E60CE42B726 /* ServiceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31DCA668936D6A3813EAB100 /* ServiceResolver.swift */; };
+		E088160006439A33C9F47FA8 /* HHServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218E1E94C5740284836655A3 /* HHServices.swift */; };
 		E294F533AB1E68FE1EB2E6EC /* HHServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6B6E7761D68A6E0004AA48A /* HHServices.framework */; };
-		F6B6E78F1D68A741004AA48A /* HHService.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7821D68A741004AA48A /* HHService.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F6B6E7901D68A741004AA48A /* HHService.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6E7831D68A741004AA48A /* HHService.m */; };
-		F6B6E7911D68A741004AA48A /* HHServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7841D68A741004AA48A /* HHServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F6B6E7921D68A741004AA48A /* HHServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6E7851D68A741004AA48A /* HHServiceBrowser.m */; };
-		F6B6E7931D68A741004AA48A /* HHServiceDiscoveryOperation+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7861D68A741004AA48A /* HHServiceDiscoveryOperation+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		F6B6E7941D68A741004AA48A /* HHServiceDiscoveryOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7871D68A741004AA48A /* HHServiceDiscoveryOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F6B6E7951D68A741004AA48A /* HHServiceDiscoveryOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6E7881D68A741004AA48A /* HHServiceDiscoveryOperation.m */; };
-		F6B6E7961D68A741004AA48A /* HHServicePublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7891D68A741004AA48A /* HHServicePublisher.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F6B6E7971D68A741004AA48A /* HHServicePublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = F6B6E78A1D68A741004AA48A /* HHServicePublisher.m */; };
+		E3F1FBD51D65523CA689938B /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF4C59F77475207DD093F3D /* Service.swift */; };
+		F6B6E78F1D68A741004AA48A /* (null) in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7821D68A741004AA48A; settings = {ATTRIBUTES = (Public, ); }; };
+		F6B6E7911D68A741004AA48A /* (null) in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7841D68A741004AA48A; settings = {ATTRIBUTES = (Public, ); }; };
+		F6B6E7931D68A741004AA48A /* (null) in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7861D68A741004AA48A; settings = {ATTRIBUTES = (Private, ); }; };
+		F6B6E7941D68A741004AA48A /* (null) in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7871D68A741004AA48A; settings = {ATTRIBUTES = (Public, ); }; };
+		F6B6E7961D68A741004AA48A /* (null) in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E7891D68A741004AA48A; settings = {ATTRIBUTES = (Public, ); }; };
 		F6B6E7991D68A741004AA48A /* HHServices.h in Headers */ = {isa = PBXBuildFile; fileRef = F6B6E78D1D68A741004AA48A /* HHServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FDA6261B758246A6D2D6A280 /* DNSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73406A9F62E14208CED1521F /* DNSService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,28 +39,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
-
 /* Begin PBXFileReference section */
-		13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HHServices+Swift.swift"; sourceTree = "<group>"; };
-		8D0381176F449556A2F8E305 /* HHServicesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HHServicesTests.m; sourceTree = "<group>"; };
+		0672DEF09FF675258D1C600B /* ServicePublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/ServicePublisher.swift; sourceTree = SOURCE_ROOT; };
+		218E1E94C5740284836655A3 /* HHServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/HHServices.swift; sourceTree = SOURCE_ROOT; };
+		26C7AADAB983BDE052F1B97A /* TXTRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/TXTRecord.swift; sourceTree = SOURCE_ROOT; };
+		31DCA668936D6A3813EAB100 /* ServiceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/ServiceResolver.swift; sourceTree = SOURCE_ROOT; };
+		5EFDAEFD6184E2D49FF861DF /* ServiceValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/ServiceValidation.swift; sourceTree = SOURCE_ROOT; };
+		73406A9F62E14208CED1521F /* DNSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/DNSService.swift; sourceTree = SOURCE_ROOT; };
+		81DE9DA727EA6E3C6AB7E78B /* HHServicesError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/HHServicesError.swift; sourceTree = SOURCE_ROOT; };
 		B5858C59E85B9DF0F502D675 /* HHServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HHServicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C8B4B9011D68A741004AA48A /* HHServiceValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceValidation.h; sourceTree = "<group>"; };
-		C8B4B9021D68A741004AA48A /* HHServiceValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServiceValidation.m; sourceTree = "<group>"; };
+		B61E339853E91DF69A40E6A4 /* SocketAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/SocketAddress.swift; sourceTree = SOURCE_ROOT; };
+		C25CD24452C66D34547A5D43 /* ServiceBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/ServiceBrowser.swift; sourceTree = SOURCE_ROOT; };
+		F2CA7FF2AD3CBEC341D5B6C8 /* HHServicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HHServicesTests.swift; sourceTree = "<group>"; };
 		F6B6E7761D68A6E0004AA48A /* HHServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HHServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6B6E7821D68A741004AA48A /* HHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHService.h; sourceTree = "<group>"; };
-		F6B6E7831D68A741004AA48A /* HHService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHService.m; sourceTree = "<group>"; };
-		F6B6E7841D68A741004AA48A /* HHServiceBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceBrowser.h; sourceTree = "<group>"; };
-		F6B6E7851D68A741004AA48A /* HHServiceBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServiceBrowser.m; sourceTree = "<group>"; };
-		F6B6E7861D68A741004AA48A /* HHServiceDiscoveryOperation+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HHServiceDiscoveryOperation+Private.h"; sourceTree = "<group>"; };
-		F6B6E7871D68A741004AA48A /* HHServiceDiscoveryOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServiceDiscoveryOperation.h; sourceTree = "<group>"; };
-		F6B6E7881D68A741004AA48A /* HHServiceDiscoveryOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServiceDiscoveryOperation.m; sourceTree = "<group>"; };
-		F6B6E7891D68A741004AA48A /* HHServicePublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServicePublisher.h; sourceTree = "<group>"; };
-		F6B6E78A1D68A741004AA48A /* HHServicePublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHServicePublisher.m; sourceTree = "<group>"; };
 		F6B6E78D1D68A741004AA48A /* HHServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHServices.h; sourceTree = "<group>"; };
 		F6B6E78E1D68A741004AA48A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6B6E79B1D68A8C1004AA48A /* HHServices-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HHServices-Prefix.pch"; sourceTree = "<group>"; };
 		F6CDB58E1D71DA67000E48CF /* HHServices.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HHServices.podspec; sourceTree = "<group>"; };
 		F6CDB58F1D71DA67000E48CF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		FEF4C59F77475207DD093F3D /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/HHServices/Service.swift; sourceTree = SOURCE_ROOT; };
 		"TEMP_F53E44D8-FCE4-4134-B7E0-349F7A14B3D7" /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -83,7 +84,7 @@
 		78EFBDE1767473A6F3C3B335 /* HHServicesTests */ = {
 			isa = PBXGroup;
 			children = (
-				8D0381176F449556A2F8E305 /* HHServicesTests.m */,
+				F2CA7FF2AD3CBEC341D5B6C8 /* HHServicesTests.swift */,
 			);
 			name = HHServicesTests;
 			path = Tests;
@@ -113,18 +114,16 @@
 		F6B6E7811D68A741004AA48A /* HHServices */ = {
 			isa = PBXGroup;
 			children = (
-				F6B6E7821D68A741004AA48A /* HHService.h */,
-				F6B6E7831D68A741004AA48A /* HHService.m */,
-				F6B6E7841D68A741004AA48A /* HHServiceBrowser.h */,
-				F6B6E7851D68A741004AA48A /* HHServiceBrowser.m */,
-				F6B6E7861D68A741004AA48A /* HHServiceDiscoveryOperation+Private.h */,
-				F6B6E7871D68A741004AA48A /* HHServiceDiscoveryOperation.h */,
-				F6B6E7881D68A741004AA48A /* HHServiceDiscoveryOperation.m */,
-				F6B6E7891D68A741004AA48A /* HHServicePublisher.h */,
-				F6B6E78A1D68A741004AA48A /* HHServicePublisher.m */,
-				C8B4B9011D68A741004AA48A /* HHServiceValidation.h */,
-				C8B4B9021D68A741004AA48A /* HHServiceValidation.m */,
-				13AAFCBF06AC31D1A00B7180 /* HHServices+Swift.swift */,
+				73406A9F62E14208CED1521F /* DNSService.swift */,
+				218E1E94C5740284836655A3 /* HHServices.swift */,
+				81DE9DA727EA6E3C6AB7E78B /* HHServicesError.swift */,
+				FEF4C59F77475207DD093F3D /* Service.swift */,
+				C25CD24452C66D34547A5D43 /* ServiceBrowser.swift */,
+				0672DEF09FF675258D1C600B /* ServicePublisher.swift */,
+				31DCA668936D6A3813EAB100 /* ServiceResolver.swift */,
+				5EFDAEFD6184E2D49FF861DF /* ServiceValidation.swift */,
+				B61E339853E91DF69A40E6A4 /* SocketAddress.swift */,
+				26C7AADAB983BDE052F1B97A /* TXTRecord.swift */,
 			);
 			path = HHServices;
 			sourceTree = "<group>";
@@ -146,12 +145,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6B6E7941D68A741004AA48A /* HHServiceDiscoveryOperation.h in Headers */,
+				F6B6E7941D68A741004AA48A /* (null) in Headers */,
 				F6B6E7991D68A741004AA48A /* HHServices.h in Headers */,
-				F6B6E7961D68A741004AA48A /* HHServicePublisher.h in Headers */,
-				F6B6E78F1D68A741004AA48A /* HHService.h in Headers */,
-				F6B6E7911D68A741004AA48A /* HHServiceBrowser.h in Headers */,
-				F6B6E7931D68A741004AA48A /* HHServiceDiscoveryOperation+Private.h in Headers */,
+				F6B6E7961D68A741004AA48A /* (null) in Headers */,
+				F6B6E78F1D68A741004AA48A /* (null) in Headers */,
+				F6B6E7911D68A741004AA48A /* (null) in Headers */,
+				F6B6E7931D68A741004AA48A /* (null) in Headers */,
 				C8B4B9031D68A741004AA48A /* HHServiceValidation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,7 +251,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D10849E428E5372390AF5FFB /* HHServicesTests.m in Sources */,
+				A0B16F0530F467486C07ADF3 /* HHServicesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,12 +259,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6B6E7921D68A741004AA48A /* HHServiceBrowser.m in Sources */,
-				F6B6E7951D68A741004AA48A /* HHServiceDiscoveryOperation.m in Sources */,
-				F6B6E7971D68A741004AA48A /* HHServicePublisher.m in Sources */,
-				F6B6E7901D68A741004AA48A /* HHService.m in Sources */,
-				C8B4B9041D68A741004AA48A /* HHServiceValidation.m in Sources */,
-				BCECF732F64C474E78FAA27A /* HHServices+Swift.swift in Sources */,
+				FDA6261B758246A6D2D6A280 /* DNSService.swift in Sources */,
+				E088160006439A33C9F47FA8 /* HHServices.swift in Sources */,
+				2E9F631B1A4D81C98868D57A /* HHServicesError.swift in Sources */,
+				E3F1FBD51D65523CA689938B /* Service.swift in Sources */,
+				240E569C97F2C2D93CB929D3 /* ServiceBrowser.swift in Sources */,
+				8D46C349AEFBF9826B481239 /* ServicePublisher.swift in Sources */,
+				D4BCAF712D190E60CE42B726 /* ServiceResolver.swift in Sources */,
+				0980B3B9BEDF17AB2BA41DD4 /* ServiceValidation.swift in Sources */,
+				D0E79AC16F776CB03B3E82A5 /* SocketAddress.swift in Sources */,
+				032AF90EEF9C4F989CE1D457 /* TXTRecord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

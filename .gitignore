@@ -16,6 +16,5 @@ notes
 .DS_Store
 .build
 .claude
-ai_docs/utils
-ai_docs/temp
+ai_docs
 Binary
