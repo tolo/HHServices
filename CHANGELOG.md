@@ -84,6 +84,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - WiFi performance degradation when using P2P (can now use Bluetooth-only mode)
 
+### Bluetooth P2P Implementation Note
+As per Apple's Technical Q&A 1753 (https://developer.apple.com/library/ios/qa/qa1753/_index.html), version 2.0 adds the ability to specify that service browsing, publishing, and resolution should be done over Bluetooth only. This stops the WiFi radio from being placed into adhoc mode multiple times a second (the cause of WiFi throughput/performance degradation when using Apple's MultipeerConnectivity framework). NSNetService and Multipeer both have this problem because you cannot limit them to Bluetooth (or WiFi) only, and (as of iOS 9.3) calling stopAdvertise() only takes effect after 30 seconds or so.
+
 ## [1.0.0] - 2012
 
 ### Added
@@ -97,3 +100,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Background
 This framework was created when iOS 5 removed Bluetooth networking support from NSNetService, forcing developers to use low-level DNSService* (dns-sd) APIs for Bluetooth P2P connectivity.
+
+### Important iOS 11+ Note
+Starting in iOS 11, NSNetService no longer supports P2P Bluetooth. If this kind of connectivity is required in your app, HHServices remains the only viable alternative, either as a replacement for NSNetService or used in combination. See [issue 22](https://github.com/tolo/HHServices/issues/22) for more details.
